@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluenix · Brand Transition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#12A395;
+    --teal-2:#0C8378;
+    --teal-3:#0A6B62;
+    --teal-4:#075C55;
+    --wash:#E8F5F3;
+    --wash-2:#D9EDEA;
+    --ink:#0F1F2E;
+    --ink-2:#2C3E4E;
+    --ink-3:#5B6B7A;
+    --ink-4:#8A96A2;
+    --line:#D9E3E8;
+    --paper:#FFFFFF;
+    --paper-2:#F5F8F8;
+    --alert:#DC2626;
+    --amber:#D97706;
+    --amber-bg:#FEF3C7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Figtree',system-ui,sans-serif;
+    background:var(--paper-2);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  html[data-lang="cs"]{font-feature-settings:"kern","liga"}
+
+  /* ============ TOP BAR ============ */
+  .topbar{
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:100;
+  }
+  .topbar-inner{
+    max-width:1280px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--ink);
+    text-decoration:none;
+  }
+  .logo-mark{
+    width:32px;height:32px;background:var(--ink);border-radius:7px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--teal);font-weight:800;font-size:20px;line-height:1;
+  }
+  .nav{
+    display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;
+  }
+  .nav button{
+    background:transparent;border:1px solid transparent;
+    padding:8px 14px;border-radius:6px;cursor:pointer;
+    font-family:inherit;font-size:13.5px;font-weight:500;color:var(--ink-3);
+    display:flex;align-items:center;gap:8px;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .nav button:hover{background:var(--wash);color:var(--ink)}
+  .nav button.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .nav button.active .num{color:rgba(255,255,255,.8)}
+  .nav button .num{
+    font-size:11px;font-weight:700;color:var(--teal);
+    letter-spacing:.05em;
+  }
+  .nav button.home-btn .num{display:none}
+
+  .lang-toggle{
+    display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;
+  }
+  .lang-toggle button{
+    background:var(--paper);border:0;padding:8px 14px;cursor:pointer;
+    font-family:inherit;font-size:12px;font-weight:600;color:var(--ink-3);
+    letter-spacing:.05em;text-transform:uppercase;
+    transition:background .15s,color .15s;
+  }
+  .lang-toggle button.active{background:var(--ink);color:#fff}
+  .lang-toggle button + button{border-left:1px solid var(--line)}
+  .lang-toggle button.active + button{border-left-color:var(--ink)}
+
+  /* ============ CONTENT AREA ============ */
+  main{max-width:1280px;margin:0 auto;padding:32px 24px 80px}
+
+  /* Slide container — mirrors the PPT proportions */
+  .slide{
+    background:var(--paper);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 1px 3px rgba(15,31,46,.06),0 8px 24px rgba(15,31,46,.05);
+    margin-bottom:32px;
+  }
+
+  /* ============ COVER SLIDE ============ */
+  .cover{display:grid;grid-template-columns:1fr 320px;min-height:520px}
+  .cover-main{padding:56px 56px 48px;display:flex;flex-direction:column;justify-content:center}
+  .cover-band{
+    background:var(--teal);height:88px;
+    grid-column:1 / -1;
+    position:relative;
+  }
+  .cover-band::after{
+    content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:rgba(255,255,255,.15);
+  }
+  .cover-title{
+    font-size:clamp(38px,5vw,52px);font-weight:800;line-height:1.05;
+    letter-spacing:-.03em;color:var(--ink);margin-bottom:32px;
+  }
+  .cover-logos{
+    display:flex;align-items:center;gap:20px;margin-bottom:24px;
+    font-size:22px;font-weight:700;
+  }
+  .cover-logos .old{color:var(--ink-4);text-decoration:line-through;text-decoration-thickness:2px}
+  .cover-logos .arr{color:var(--teal);font-size:26px}
+  .cover-logos .new{
+    color:var(--ink);display:flex;align-items:center;gap:10px;
+  }
+  .cover-logos .new-mark{
+    width:36px;height:36px;background:var(--ink);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--teal);font-weight:800;font-size:22px;
+  }
+  .cover-meta{
+    color:var(--ink-3);font-size:16px;font-style:italic;
+  }
+  .cover-side{
+    background:var(--wash);padding:56px 40px;
+    display:flex;flex-direction:column;justify-content:center;gap:36px;
+  }
+  .cover-stat{text-align:center}
+  .cover-stat-num{
+    font-size:64px;font-weight:800;color:var(--teal);
+    line-height:1;letter-spacing:-.04em;
+  }
+  .cover-stat-label{
+    color:var(--ink-2);font-size:15px;margin-top:6px;
+  }
+
+  /* ============ PHASE SLIDE HEADER ============ */
+  .phase-slide{display:grid;grid-template-columns:220px 1fr;min-height:auto}
+  .phase-badge{
+    background:var(--teal-2);color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:48px 20px;
+  }
+  .phase-badge[data-phase="1"]{background:var(--teal-2)}
+  .phase-badge[data-phase="2"]{background:var(--teal)}
+  .phase-badge[data-phase="3"]{background:var(--teal-3)}
+  .phase-badge[data-phase="4"]{background:var(--teal-4)}
+  .phase-num{font-size:96px;font-weight:800;line-height:1;letter-spacing:-.05em}
+  .phase-word{
+    font-size:13px;font-weight:600;letter-spacing:.28em;
+    color:rgba(255,255,255,.85);margin-top:8px;
+  }
+  .phase-body{padding:44px 48px}
+  .phase-title{
+    font-size:34px;font-weight:800;letter-spacing:-.025em;color:var(--ink);
+    margin-bottom:8px;
+  }
+  .phase-sub{
+    color:var(--ink-3);font-size:16px;font-style:italic;margin-bottom:32px;
+  }
+
+  /* ============ ORIGINAL PPT CONTENT (per phase) ============ */
+  .cards-2x2{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  }
+  .card-og{
+    background:var(--paper-2);border:1px solid var(--line);
+    border-radius:8px;padding:20px 22px;
+  }
+  .card-og-title{
+    font-weight:700;font-size:16px;color:var(--ink);margin-bottom:8px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .card-og-icon{
+    width:22px;height:22px;flex:none;color:var(--teal);
+  }
+  .card-og-text{color:var(--ink-2);font-size:14px;line-height:1.55}
+
+  .steps-list{display:flex;flex-direction:column;gap:20px}
+  .step-og{display:flex;gap:16px}
+  .step-og-slash{
+    width:24px;flex:none;color:var(--teal);font-size:20px;font-weight:600;
+    line-height:1;padding-top:2px;transform:skewX(-15deg);
+  }
+  .step-og-body{flex:1}
+  .step-og-title{font-weight:700;font-size:16px;color:var(--ink);margin-bottom:4px}
+  .step-og-text{color:var(--ink-2);font-size:14px;line-height:1.55}
+
+  .panels-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel-og{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:8px;
+    padding:22px 24px;
+  }
+  .panel-og-title{
+    font-weight:700;font-size:17px;color:var(--ink);margin-bottom:16px;
+    padding-bottom:12px;border-bottom:2px solid var(--teal);
+    display:flex;align-items:center;gap:8px;
+  }
+  .panel-og ul{list-style:none}
+  .panel-og li{
+    color:var(--ink-2);font-size:14px;line-height:1.5;margin-bottom:14px;
+    padding-left:22px;position:relative;
+  }
+  .panel-og li::before{
+    content:'→';position:absolute;left:0;top:0;color:var(--teal);font-weight:600;
+  }
+
+  .stack-list{display:flex;flex-direction:column;gap:14px}
+  .stack-og{
+    display:flex;gap:0;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:8px;overflow:hidden;
+  }
+  .stack-og-accent{width:6px;background:var(--teal);flex:none}
+  .stack-og-body{padding:18px 22px;flex:1}
+  .stack-og-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:6px;gap:16px;
+  }
+  .stack-og-title{font-weight:700;font-size:16px;color:var(--ink)}
+  .stack-og-tag{
+    color:var(--teal);font-size:13px;font-style:italic;font-weight:500;
+    white-space:nowrap;
+  }
+  .stack-og-text{color:var(--ink-2);font-size:14px;line-height:1.5}
+
+  .checklist-banner{
+    background:var(--amber-bg);border:1px solid #FDE68A;
+    border-radius:8px;padding:14px 18px;margin-top:24px;
+    font-size:14px;color:#78350F;line-height:1.55;
+  }
+
+  /* ============ DRILL-DOWN SECTION ============ */
+  .drilldown{
+    margin-top:0;background:var(--paper);border-radius:12px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(15,31,46,.06),0 8px 24px rgba(15,31,46,.05);
+  }
+  .dd-header{
+    background:var(--ink);color:#fff;padding:22px 32px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .dd-header-badge{
+    background:var(--teal);color:#fff;
+    width:32px;height:32px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:15px;
+  }
+  .dd-header-text h3{font-size:18px;font-weight:700;letter-spacing:-.01em}
+  .dd-header-text p{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px}
+
+  .dd-body{padding:32px}
+
+  .dd-section{margin-bottom:32px}
+  .dd-section:last-child{margin-bottom:0}
+  .dd-section-title{
+    font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal-3);margin-bottom:16px;
+    padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+
+  .dd-items{display:flex;flex-direction:column;gap:12px}
+  .dd-item{
+    display:grid;grid-template-columns:auto 1fr auto;gap:16px;
+    padding:14px 16px;background:var(--paper-2);border-radius:8px;
+    border-left:3px solid var(--teal);
+    align-items:start;
+  }
+  .dd-item.new{border-left-color:var(--amber);background:#FFFBEB}
+  .dd-item-marker{
+    font-weight:700;font-size:13px;color:var(--teal-3);
+    background:var(--wash);padding:3px 8px;border-radius:4px;
+    letter-spacing:.03em;white-space:nowrap;
+  }
+  .dd-item.new .dd-item-marker{background:var(--amber-bg);color:#78350F}
+  .dd-item.new .dd-item-marker::before{content:'+ '}
+  .dd-item-body{font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+  .dd-item-body strong{color:var(--ink);font-weight:600}
+  .dd-item-meta{
+    font-size:12px;color:var(--ink-4);font-style:italic;white-space:nowrap;
+    padding-top:3px;
+  }
+
+  .dd-decisions{
+    background:var(--wash);border-radius:10px;padding:24px;
+  }
+  .dd-decisions-title{
+    font-size:16px;font-weight:700;color:var(--ink);margin-bottom:16px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .dd-decisions-title::before{
+    content:'?';width:24px;height:24px;background:var(--teal);color:#fff;
+    border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:14px;
+  }
+  .dd-q{display:flex;gap:12px;margin-bottom:10px;font-size:14px;color:var(--ink-2);line-height:1.5}
+  .dd-q:last-child{margin-bottom:0}
+  .dd-q-num{
+    font-weight:700;color:var(--teal-3);width:22px;flex:none;
+  }
+
+  /* ============ NAVIGATION FOOTER ============ */
+  .nav-footer{
+    display:flex;gap:12px;justify-content:space-between;align-items:center;
+    padding:20px 0 0;flex-wrap:wrap;
+  }
+  .nav-footer-side{display:flex;gap:10px}
+  .nav-btn{
+    background:var(--paper);border:1px solid var(--line);
+    padding:10px 18px;border-radius:8px;cursor:pointer;
+    font-family:inherit;font-size:14px;font-weight:500;color:var(--ink-2);
+    display:flex;align-items:center;gap:8px;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .nav-btn:hover:not(:disabled){background:var(--wash);border-color:var(--teal);color:var(--ink)}
+  .nav-btn:disabled{opacity:.4;cursor:not-allowed}
+  .nav-btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .nav-btn.primary:hover:not(:disabled){background:var(--teal-2);border-color:var(--teal-2)}
+  .nav-btn.home{background:var(--ink);border-color:var(--ink);color:#fff}
+  .nav-btn.home:hover{background:var(--ink-2);border-color:var(--ink-2);color:#fff}
+
+  /* ============ HIDE / SHOW ============ */
+  .view{display:none}
+  .view.active{display:block}
+  [data-lang="en"] .cs-only,[data-lang="cs"] .en-only{display:none}
+
+  /* ============ ANIMATION ============ */
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .view.active{animation:fadeIn .25s ease-out}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:900px){
+    .cover{grid-template-columns:1fr}
+    .cover-side{flex-direction:row;justify-content:space-around;padding:32px 24px}
+    .cover-main{padding:40px 32px 32px}
+    .phase-slide{grid-template-columns:1fr}
+    .phase-badge{padding:24px;flex-direction:row;gap:16px;justify-content:center}
+    .phase-num{font-size:56px}
+    .phase-body{padding:32px 24px}
+    .cards-2x2,.panels-2{grid-template-columns:1fr}
+    .dd-item{grid-template-columns:auto 1fr;gap:12px}
+    .dd-item-meta{grid-column:1 / -1;padding-top:0}
+    .nav{order:3;flex-basis:100%;justify-content:flex-start;overflow-x:auto;padding-bottom:4px}
+    .nav button{white-space:nowrap;flex:none}
+  }
+
+  /* Print */
+  @media print{
+    .topbar,.nav-footer{display:none}
+    .view{display:block!important}
+    main{padding:0}
+    .slide,.drilldown{box-shadow:none;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAVIGATION ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#" class="logo" onclick="goTo('cover');return false" aria-label="Fluenix — home">
+      <span class="logo-mark" aria-hidden="true">F</span>
+      <span>Fluenix</span>
+    </a>
+
+    <nav class="nav" role="tablist" aria-label="Deck navigation">
+      <button class="home-btn" data-target="cover" onclick="goTo('cover')">
+        <span class="en-only">Overview</span><span class="cs-only">Přehled</span>
+      </button>
+      <button data-target="phase1" onclick="goTo('phase1')">
+        <span class="num">01</span>
+        <span class="en-only">Preparation</span><span class="cs-only">Příprava</span>
+      </button>
+      <button data-target="phase2" onclick="goTo('phase2')">
+        <span class="num">02</span>
+        <span class="en-only">Launch Day</span><span class="cs-only">Den spuštění</span>
+      </button>
+      <button data-target="phase3" onclick="goTo('phase3')">
+        <span class="num">03</span>
+        <span class="en-only">Public &amp; Google</span><span class="cs-only">Veřejnost &amp; Google</span>
+      </button>
+      <button data-target="phase4" onclick="goTo('phase4')">
+        <span class="num">04</span>
+        <span class="en-only">Lead Engine</span><span class="cs-only">Lead Engine</span>
+      </button>
+    </nav>
+
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button data-lang="en" class="active" onclick="setLang('en')">EN</button>
+      <button data-lang="cs" onclick="setLang('cs')">CZ</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- COVER                                                        -->
+<!-- ============================================================ -->
+<section class="view active" id="cover">
+  <div class="slide">
+    <div class="cover-band"></div>
+    <div class="cover">
+      <div class="cover-main">
+        <div class="cover-logos">
+          <span class="old">FuelOmat</span>
+          <span class="arr">→</span>
+          <span class="new"><span class="new-mark">F</span> Fluenix</span>
+        </div>
+        <h1 class="cover-title">
+          <span class="en-only">Brand Transition &amp; Rebranding Strategy</span>
+          <span class="cs-only">Přechod značky a strategie rebrandingu</span>
+        </h1>
+        <div class="cover-meta">
+          <span class="en-only">Go-live Execution Plan · Prague Team Meeting, July 2026</span>
+          <span class="cs-only">Plán realizace spuštění · Zasedání týmu, Praha, červenec 2026</span>
+        </div>
+      </div>
+      <aside class="cover-side">
+        <div class="cover-stat">
+          <div class="cover-stat-num">4</div>
+          <div class="cover-stat-label"><span class="en-only">Phases</span><span class="cs-only">Fáze</span></div>
+        </div>
+        <div class="cover-stat">
+          <div class="cover-stat-num">6</div>
+          <div class="cover-stat-label"><span class="en-only">Weeks</span><span class="cs-only">Týdnů</span></div>
+        </div>
+        <div class="cover-stat">
+          <div class="cover-stat-num">100%</div>
+          <div class="cover-stat-label"><span class="en-only">Brand Switch</span><span class="cs-only">Přechod značky</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <div class="nav-footer-side"></div>
+    <div class="nav-footer-side">
+      <button class="nav-btn primary" onclick="goTo('phase1')">
+        <span class="en-only">Start · Phase 1</span><span class="cs-only">Začít · Fáze 1</span> →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PHASE 1 · PREPARATION                                        -->
+<!-- ============================================================ -->
+<section class="view" id="phase1">
+
+  <!-- Original slide content -->
+  <div class="slide">
+    <div class="phase-slide">
+      <aside class="phase-badge" data-phase="1">
+        <span class="phase-num">1</span>
+        <span class="phase-word"><span class="en-only">PHASE</span><span class="cs-only">FÁZE</span></span>
+      </aside>
+      <div class="phase-body">
+        <h2 class="phase-title"><span class="en-only">Silent Preparation</span><span class="cs-only">Tichá příprava</span></h2>
+        <p class="phase-sub">
+          <span class="en-only">2 weeks before Go-Live — everything built behind the scenes</span>
+          <span class="cs-only">2 týdny před spuštěním — vše se připravuje v zákulisí</span>
+        </p>
+
+        <div class="cards-2x2">
+          <div class="card-og">
+            <div class="card-og-title">
+              <svg class="card-og-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              <span class="en-only">SEO URL Mapping</span><span class="cs-only">Mapování URL pro SEO</span>
+            </div>
+            <p class="card-og-text">
+              <span class="en-only">Full 301 redirect map: old URLs → new. Protect Google rankings.</span>
+              <span class="cs-only">Kompletní mapa 301 přesměrování: staré URL → nové. Ochrana pozic v Google.</span>
+            </p>
+          </div>
+          <div class="card-og">
+            <div class="card-og-title">
+              <svg class="card-og-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2a10 10 0 100 20 4 4 0 000-8h-1a2 2 0 010-4A9 9 0 0012 2z"/></svg>
+              <span class="en-only">Marketing Assets</span><span class="cs-only">Marketingové materiály</span>
+            </div>
+            <p class="card-og-text">
+              <span class="en-only">Email series, banners, launch video, employee email signatures.</span>
+              <span class="cs-only">Série e-mailů, bannery, video ke spuštění, e-mailové podpisy zaměstnanců.</span>
+            </p>
+          </div>
+          <div class="card-og">
+            <div class="card-og-title">
+              <svg class="card-og-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              <span class="en-only">Internal Alignment</span><span class="cs-only">Interní sladění</span>
+            </div>
+            <p class="card-og-text">
+              <span class="en-only">Training for Sales, Support &amp; CS: scripts for confused customers.</span>
+              <span class="cs-only">Školení pro Sales, Support a CS: scripty pro zmatené zákazníky.</span>
+            </p>
+          </div>
+          <div class="card-og">
+            <div class="card-og-title">
+              <svg class="card-og-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M5 8h14M5 8l-2 6a4 4 0 008 0L9 8M19 8l-2 6a4 4 0 008 0l-2-6"/></svg>
+              <span class="en-only">Legal &amp; Trademark</span><span class="cs-only">Právní stránka a ochranná známka</span>
+            </div>
+            <p class="card-og-text">
+              <span class="en-only">Verify Fluenix trademark. Update contracts, licensing agreements.</span>
+              <span class="cs-only">Ověření ochranné známky Fluenix. Aktualizace smluv a licenčních dohod.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="checklist-banner">
+          ✓ <span class="en-only">Checklist: All touchpoints mapped (website, social, invoices, email sigs, sales decks) before any go-live button is pressed.</span>
+          <span class="cs-only">Kontrolní seznam: Všechny kontaktní body zmapovány (web, sociální sítě, faktury, podpisy, prezentace) předtím, než se zmáčkne jakékoli tlačítko spuštění.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drill-down -->
+  <div class="drilldown">
+    <header class="dd-header">
+      <div class="dd-header-badge">1</div>
+      <div class="dd-header-text">
+        <h3><span class="en-only">Drill-down · What we do in each step</span><span class="cs-only">Detail · Co se v každém kroku dělá</span></h3>
+        <p><span class="en-only">Concrete actions, owners, materials — for team discussion</span><span class="cs-only">Konkrétní kroky, vlastníci, materiály — k projednání s týmem</span></p>
+      </div>
+    </header>
+
+    <div class="dd-body">
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">SEO URL Mapping</span><span class="cs-only">Mapování URL pro SEO</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">1.1</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Full URL inventory of fuelomat.cz</strong> — every page mapped to its destination on fluenix.eu.</span>
+              <span class="cs-only"><strong>Kompletní inventura URL fuelomat.cz</strong> — každá stránka namapována na cílovou adresu na fluenix.eu.</span>
+            </div>
+            <span class="dd-item-meta">Dev</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">1.2</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>301 redirects live</strong> before launch day, tested from Google Search Console.</span>
+              <span class="cs-only"><strong>301 přesměrování naživo</strong> ještě před spuštěním, otestováno v Google Search Console.</span>
+            </div>
+            <span class="dd-item-meta">Dev</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Marketing Assets</span><span class="cs-only">Marketingové materiály</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">2.1</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>CEO video</strong> — script sent to Honza, awaiting recording. 60s, EN + CZ.</span>
+              <span class="cs-only"><strong>Video generálního ředitele</strong> — scénář odeslán Honzovi, čekáme na natočení. 60s, EN + CZ.</span>
+            </div>
+            <span class="dd-item-meta">CEO / Honza</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">2.2</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Email signatures</strong> — new template for entire team with "formerly FuelOmat" banner.</span>
+              <span class="cs-only"><strong>E-mailové podpisy</strong> — nová šablona pro celý tým s bannerem „dříve FuelOmat“.</span>
+            </div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">2.3</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Existing Czech One-pager</strong> — ready to attach to launch emails.</span>
+              <span class="cs-only"><strong>Existující český One-pager</strong> — připraven pro přílohu k e-mailům při spuštění.</span>
+            </div>
+            <span class="dd-item-meta">✓ ready</span>
+          </div>
+          <div class="dd-item new">
+            <span class="dd-item-marker">2.4</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Website bug fixes</strong> — social icons (all point to Facebook), Login button (still fuelomat.cz), 4 empty Solution pages, footer "@ Fluenix" typo.</span>
+              <span class="cs-only"><strong>Opravy chyb na webu</strong> — ikony sítí (všechny míří na Facebook), tlačítko Login (stále fuelomat.cz), 4 prázdné stránky řešení, překlep „@ Fluenix“ v patičce.</span>
+            </div>
+            <span class="dd-item-meta">Dev</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Internal Alignment</span><span class="cs-only">Interní sladění</span></h4>
+        <div class="dd-items">
+          <div class="dd-item new">
+            <span class="dd-item-marker">3.1</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Extract customer list from Mango CRM</strong> — CZ + SK: existing customers, hot prospects, cold prospects. Segmented for the launch emails.</span>
+              <span class="cs-only"><strong>Export seznamu zákazníků z Mango CRM</strong> — CZ + SK: stávající zákazníci, teplí zájemci, studení zájemci. Segmentováno pro e-maily ke spuštění.</span>
+            </div>
+            <span class="dd-item-meta">Sales</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">3.2</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Phone script for the local team</strong> — what to say to a customer calling in confused, what to say when calling proactively.</span>
+              <span class="cs-only"><strong>Telefonický scénář pro místní tým</strong> — co říct zmatenému zákazníkovi, co říct při aktivním hovoru.</span>
+            </div>
+            <span class="dd-item-meta">Sales</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">3.3</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Support &amp; CS briefing</strong> — one-page FAQ they can reference on any incoming call or ticket.</span>
+              <span class="cs-only"><strong>Instruktáž Support &amp; CS</strong> — jednostránkové FAQ jako reference při jakémkoli hovoru nebo ticketu.</span>
+            </div>
+            <span class="dd-item-meta">Support</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Legal &amp; Trademark</span><span class="cs-only">Právní stránka a ochranná známka</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">4.1</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Fluenix trademark status</strong> — confirm registration in CZ, EU. Blocker if not resolved.</span>
+              <span class="cs-only"><strong>Stav ochranné známky Fluenix</strong> — potvrdit registraci v ČR a EU. Blocker, pokud není vyřešeno.</span>
+            </div>
+            <span class="dd-item-meta">Legal</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">4.2</span>
+            <div class="dd-item-body">
+              <span class="en-only"><strong>Customer contracts</strong> — decide: continuation notice or full re-signing? Which customers need a formal letter.</span>
+              <span class="cs-only"><strong>Zákaznické smlouvy</strong> — rozhodnout: oznámení o pokračování nebo nové podpisy? Kteří zákazníci potřebují formální dopis.</span>
+            </div>
+            <span class="dd-item-meta">Legal / Sales</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-decisions">
+        <div class="dd-decisions-title"><span class="en-only">Decisions for this meeting</span><span class="cs-only">Rozhodnutí na této schůzce</span></div>
+        <div class="dd-q"><span class="dd-q-num">1</span><span><span class="en-only"><strong>Exact Go-Live date</strong> — everything above locks to it.</span><span class="cs-only"><strong>Přesné datum spuštění</strong> — vše výše se na něj váže.</span></span></div>
+        <div class="dd-q"><span class="dd-q-num">2</span><span><span class="en-only"><strong>Owner per step</strong> — who signs off on each of the four boxes above.</span><span class="cs-only"><strong>Vlastník každého kroku</strong> — kdo odsouhlasí každý ze čtyř bodů výše.</span></span></div>
+        <div class="dd-q"><span class="dd-q-num">3</span><span><span class="en-only"><strong>Trademark blocker</strong> — is Fluenix registered? If not, when.</span><span class="cs-only"><strong>Blocker ochranné známky</strong> — je Fluenix zaregistrován? Pokud ne, kdy bude.</span></span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <div class="nav-footer-side">
+      <button class="nav-btn home" onclick="goTo('cover')">← <span class="en-only">Home</span><span class="cs-only">Domů</span></button>
+      <button class="nav-btn" onclick="goTo('cover')"><span class="en-only">Overview</span><span class="cs-only">Přehled</span></button>
+    </div>
+    <div class="nav-footer-side">
+      <button class="nav-btn primary" onclick="goTo('phase2')"><span class="en-only">Phase 2 · Launch Day</span><span class="cs-only">Fáze 2 · Den spuštění</span> →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PHASE 2 · LAUNCH DAY                                         -->
+<!-- ============================================================ -->
+<section class="view" id="phase2">
+
+  <div class="slide">
+    <div class="phase-slide">
+      <aside class="phase-badge" data-phase="2">
+        <span class="phase-num">2</span>
+        <span class="phase-word"><span class="en-only">PHASE</span><span class="cs-only">FÁZE</span></span>
+      </aside>
+      <div class="phase-body">
+        <h2 class="phase-title"><span class="en-only">Launch Day</span><span class="cs-only">Den spuštění</span></h2>
+        <p class="phase-sub">
+          <span class="en-only">Days 1–3 — Go live with existing customers first</span>
+          <span class="cs-only">Dny 1–3 — Spuštění nejprve pro stávající zákazníky</span>
+        </p>
+
+        <div class="steps-list">
+          <div class="step-og">
+            <span class="step-og-slash">/</span>
+            <div class="step-og-body">
+              <div class="step-og-title"><span class="en-only">Technical Switch</span><span class="cs-only">Technické přepnutí</span></div>
+              <div class="step-og-text">
+                <span class="en-only">New site live. Redirects active. Google Business updated: "Fluenix (formerly FuelOmat)".</span>
+                <span class="cs-only">Nový web naživo. Přesměrování aktivní. Google Business aktualizován: „Fluenix (dříve FuelOmat)“.</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-og">
+            <span class="step-og-slash">/</span>
+            <div class="step-og-body">
+              <div class="step-og-title"><span class="en-only">Customer Email #1</span><span class="cs-only">Zákaznický e-mail č. 1</span></div>
+              <div class="step-og-text">
+                <span class="en-only">Morning send: "We changed for you — FuelOmat is now Fluenix." CEO video + benefit summary.</span>
+                <span class="cs-only">Ranní rozeslání: „Změnili jsme se pro vás — FuelOmat je nyní Fluenix.“ Video generálního ředitele + shrnutí přínosů.</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-og">
+            <span class="step-og-slash">/</span>
+            <div class="step-og-body">
+              <div class="step-og-title"><span class="en-only">Tier-1 Personal Calls</span><span class="cs-only">Osobní hovory Tier-1</span></div>
+              <div class="step-og-text">
+                <span class="en-only">Account Managers call top clients personally. No one hears the news second-hand.</span>
+                <span class="cs-only">Account manažeři osobně volají nejdůležitějším zákazníkům. Nikdo se to nedozví z druhé ruky.</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-og">
+            <span class="step-og-slash">/</span>
+            <div class="step-og-body">
+              <div class="step-og-title"><span class="en-only">Analytics Verification</span><span class="cs-only">Ověření analytiky</span></div>
+              <div class="step-og-text">
+                <span class="en-only">Confirm Google Analytics, Tag Manager, and all dashboards tracking the new domain correctly.</span>
+                <span class="cs-only">Ověřit, že Google Analytics, Tag Manager a všechny dashboardy správně měří novou doménu.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="drilldown">
+    <header class="dd-header">
+      <div class="dd-header-badge">2</div>
+      <div class="dd-header-text">
+        <h3><span class="en-only">Drill-down · Launch day in detail</span><span class="cs-only">Detail · Den spuštění podrobně</span></h3>
+        <p><span class="en-only">Concrete actions, owners, materials</span><span class="cs-only">Konkrétní kroky, vlastníci, materiály</span></p>
+      </div>
+    </header>
+
+    <div class="dd-body">
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Technical Switch — the morning of Go-Live</span><span class="cs-only">Technické přepnutí — ráno v den spuštění</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">1.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Recommended slot: Tuesday 09:00 CET.</strong> Full working week ahead if anything breaks.</span><span class="cs-only"><strong>Doporučený čas: úterý 09:00 SEČ.</strong> Celý pracovní týden před sebou, kdyby něco selhalo.</span></div>
+            <span class="dd-item-meta">Dev</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">1.2</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Google Business Profile</strong> — flip to "Fluenix (formerly FuelOmat)" same hour.</span><span class="cs-only"><strong>Google Business Profile</strong> — přepnout na „Fluenix (dříve FuelOmat)“ ve stejnou hodinu.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+          <div class="dd-item new">
+            <span class="dd-item-marker">1.3</span>
+            <div class="dd-item-body"><span class="en-only"><strong>LinkedIn company page</strong> — name, logo, About, cover banner all switch in the same window.</span><span class="cs-only"><strong>Firemní stránka na LinkedIn</strong> — název, logo, About i banner přepnout v tomtéž okně.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Customer Email #1</span><span class="cs-only">Zákaznický e-mail č. 1</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">2.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Existing customers</strong> — Czech language, sent from Gali@fluenix.eu, CEO video linked, One-pager attached.</span><span class="cs-only"><strong>Stávající zákazníci</strong> — v češtině, odesláno z Gali@fluenix.eu, přiložen odkaz na CEO video a One-pager.</span></div>
+            <span class="dd-item-meta">Sales</span>
+          </div>
+          <div class="dd-item new">
+            <span class="dd-item-marker">2.2</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Prospects (separate wave)</strong> — same news, less personal. Sent later in the day so existing customers hear first.</span><span class="cs-only"><strong>Prospekti (samostatná vlna)</strong> — stejná zpráva, méně osobní. Odesláno později během dne, aby se stávající zákazníci dozvěděli jako první.</span></div>
+            <span class="dd-item-meta">Sales</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">2.3</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Open-rate check at +4 hours.</strong> If below 25%, send a resend to non-openers same evening.</span><span class="cs-only"><strong>Kontrola open-rate po 4 hodinách.</strong> Pokud pod 25 %, tentýž večer poslat opakované odeslání na neotvírající příjemce.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Tier-1 Personal Calls</span><span class="cs-only">Osobní hovory Tier-1</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">3.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Top customer list</strong> — segmented from Mango CRM (see Phase 1). Priority: COLAS, HOPI, AGRO Měřín, KALCIT, Prague Airport.</span><span class="cs-only"><strong>Seznam Top zákazníků</strong> — segmentováno z Mango CRM (viz Fáze 1). Priorita: COLAS, HOPI, AGRO Měřín, KALCIT, Letiště Praha.</span></div>
+            <span class="dd-item-meta">Sales</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">3.2</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Local Czech team leads</strong> — each AM takes a slice of the list. Call within 24h of the email send.</span><span class="cs-only"><strong>Vede místní český tým</strong> — každý AM si vezme část seznamu. Zavolat do 24 hodin od odeslání e-mailu.</span></div>
+            <span class="dd-item-meta">CZ Sales team</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">3.3</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Shared talking points</strong> — 5-line phone script every AM uses. Prepared in Phase 1.</span><span class="cs-only"><strong>Sdílené body k rozhovoru</strong> — 5řádkový telefonický scénář, který používá každý AM. Připraveno ve Fázi 1.</span></div>
+            <span class="dd-item-meta">Sales</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Analytics Verification</span><span class="cs-only">Ověření analytiky</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">4.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Day 1 checklist</strong> — GA4 tracking fluenix.eu, Tag Manager firing, Search Console verified for the new domain, 301s returning 200 at destinations.</span><span class="cs-only"><strong>Checklist prvního dne</strong> — GA4 měří fluenix.eu, Tag Manager funguje, Search Console ověřený pro novou doménu, 301 přesměrování vrací 200 na cílech.</span></div>
+            <span class="dd-item-meta">Dev</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-decisions">
+        <div class="dd-decisions-title"><span class="en-only">Decisions for this meeting</span><span class="cs-only">Rozhodnutí na této schůzce</span></div>
+        <div class="dd-q"><span class="dd-q-num">1</span><span><span class="en-only"><strong>Who is Tier-1</strong> — the exact list of top customers who get a personal call. Not "everyone with 50+ vehicles" — actual names.</span><span class="cs-only"><strong>Kdo je Tier-1</strong> — přesný seznam top zákazníků, kteří dostanou osobní hovor. Ne „všichni s 50+ vozidly“ — skutečná jména.</span></span></div>
+        <div class="dd-q"><span class="dd-q-num">2</span><span><span class="en-only"><strong>Slovakia — same day or separate?</strong> Same message, same day, or a distinct SK launch a week later.</span><span class="cs-only"><strong>Slovensko — stejný den, nebo zvlášť?</strong> Stejná zpráva ve stejný den, nebo samostatné SK spuštění o týden později.</span></span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <div class="nav-footer-side">
+      <button class="nav-btn home" onclick="goTo('cover')">← <span class="en-only">Home</span><span class="cs-only">Domů</span></button>
+      <button class="nav-btn" onclick="goTo('phase1')"><span class="en-only">Back · Phase 1</span><span class="cs-only">Zpět · Fáze 1</span></button>
+    </div>
+    <div class="nav-footer-side">
+      <button class="nav-btn primary" onclick="goTo('phase3')"><span class="en-only">Phase 3 · Public &amp; Google</span><span class="cs-only">Fáze 3 · Veřejnost &amp; Google</span> →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PHASE 3 · PUBLIC & GOOGLE                                    -->
+<!-- ============================================================ -->
+<section class="view" id="phase3">
+
+  <div class="slide">
+    <div class="phase-slide">
+      <aside class="phase-badge" data-phase="3">
+        <span class="phase-num">3</span>
+        <span class="phase-word"><span class="en-only">PHASE</span><span class="cs-only">FÁZE</span></span>
+      </aside>
+      <div class="phase-body">
+        <h2 class="phase-title"><span class="en-only">Public Launch &amp; Google Defence</span><span class="cs-only">Veřejné spuštění a obrana v Google</span></h2>
+        <p class="phase-sub">
+          <span class="en-only">Days 4–7 — Open to the world, protect the brand in search</span>
+          <span class="cs-only">Dny 4–7 — Otevřeno světu, chráníme značku ve vyhledávání</span>
+        </p>
+
+        <div class="panels-2">
+          <div class="panel-og">
+            <div class="panel-og-title">🛡 <span class="en-only">Google Brand Defence (PPC)</span><span class="cs-only">Obrana značky v Google (PPC)</span></div>
+            <ul>
+              <li><span class="en-only">Paid campaign on "FuelOmat" keywords</span><span class="cs-only">Placená kampaň na klíčová slova „FuelOmat“</span></li>
+              <li><span class="en-only">Ad message: "You're in the right place — FuelOmat is now Fluenix"</span><span class="cs-only">Reklamní zpráva: „Jste na správném místě — FuelOmat je nyní Fluenix“</span></li>
+              <li><span class="en-only">Capture every old-name searcher before competitors do</span><span class="cs-only">Zachytit každého, kdo hledá staré jméno, dříve než to udělá konkurence</span></li>
+            </ul>
+          </div>
+          <div class="panel-og">
+            <div class="panel-og-title">📣 <span class="en-only">Rebrand Manifesto</span><span class="cs-only">Manifest rebrandingu</span></div>
+            <ul>
+              <li><span class="en-only">Long-form blog/post: Why we rebranded</span><span class="cs-only">Dlouhý článek/příspěvek: Proč jsme se přejmenovali</span></li>
+              <li><span class="en-only">Vision, new product roadmap, future direction</span><span class="cs-only">Vize, nová produktová roadmapa, směřování</span></li>
+              <li><span class="en-only">Publish on site + all social channels</span><span class="cs-only">Publikovat na webu + všech sociálních kanálech</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="drilldown">
+    <header class="dd-header">
+      <div class="dd-header-badge">3</div>
+      <div class="dd-header-text">
+        <h3><span class="en-only">Drill-down · Public phase in detail</span><span class="cs-only">Detail · Veřejná fáze podrobně</span></h3>
+        <p><span class="en-only">Where the campaign meets the outside world</span><span class="cs-only">Kde se kampaň potkává s vnějším světem</span></p>
+      </div>
+    </header>
+
+    <div class="dd-body">
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Google Brand Defence</span><span class="cs-only">Obrana značky v Google</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">1.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Keywords</strong> — "FuelOmat", "fuelomat.cz", "FuelOmat login", "FuelOmat contact" and Czech variants.</span><span class="cs-only"><strong>Klíčová slova</strong> — „FuelOmat“, „fuelomat.cz“, „FuelOmat přihlášení“, „FuelOmat kontakt“ a české varianty.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">1.2</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Landing page</strong> — dedicated fluenix.eu/formerly-fuelomat, not the homepage. Answers "is this the same company?" above the fold.</span><span class="cs-only"><strong>Vstupní stránka</strong> — samostatná fluenix.eu/formerly-fuelomat, ne homepage. Nad záhybem odpovídá „je to stejná společnost?“.</span></div>
+            <span class="dd-item-meta">Dev / Marketing</span>
+          </div>
+          <div class="dd-item new">
+            <span class="dd-item-marker">1.3</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Seznam.cz Ads</strong> — same keywords, same landing page. ~15–20% of Czech search, cheaper than Google.</span><span class="cs-only"><strong>Seznam.cz Ads</strong> — stejná klíčová slova, stejná vstupní stránka. ~15–20 % českého vyhledávání, levnější než Google.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Rebrand Manifesto</span><span class="cs-only">Manifest rebrandingu</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">2.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Long-form article</strong> — 600–900 words, first-person from the CEO. Growth story, not apology.</span><span class="cs-only"><strong>Delší článek</strong> — 600–900 slov, v první osobě od generálního ředitele. Příběh růstu, ne omluva.</span></div>
+            <span class="dd-item-meta">CEO / Marketing</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">2.2</span>
+            <div class="dd-item-body"><span class="en-only"><strong>LinkedIn version</strong> — condensed, ~1200 characters, links to the full article.</span><span class="cs-only"><strong>Verze pro LinkedIn</strong> — zkrácená, ~1200 znaků, odkaz na plný článek.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">2.3</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Whole team shares</strong> — coordinated same window. Reach multiplies with participation.</span><span class="cs-only"><strong>Celý tým sdílí</strong> — koordinovaně v témže okně. Dosah roste s účastí.</span></div>
+            <span class="dd-item-meta">All</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">➕ Trade press outreach</span><span class="cs-only">➕ Oslovení odborného tisku</span></h4>
+        <div class="dd-items">
+          <div class="dd-item new">
+            <span class="dd-item-marker">3.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Target list</strong> — 3–5 Czech trade publications: logistics, agriculture, construction, mining. Press release ready.</span><span class="cs-only"><strong>Cílový seznam</strong> — 3–5 českých odborných médií: logistika, zemědělství, stavebnictví, těžba. Tisková zpráva připravena.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-decisions">
+        <div class="dd-decisions-title"><span class="en-only">Decisions for this meeting</span><span class="cs-only">Rozhodnutí na této schůzce</span></div>
+        <div class="dd-q"><span class="dd-q-num">1</span><span><span class="en-only"><strong>PPC budget</strong> — Google + Seznam, first two weeks. Brand-defence-only, not lead-gen.</span><span class="cs-only"><strong>Rozpočet PPC</strong> — Google + Seznam, první dva týdny. Pouze obrana značky, ne lead-gen.</span></span></div>
+        <div class="dd-q"><span class="dd-q-num">2</span><span><span class="en-only"><strong>Manifesto author</strong> — who writes the long-form article, and by when.</span><span class="cs-only"><strong>Autor manifestu</strong> — kdo píše dlouhý článek a do kdy.</span></span></div>
+        <div class="dd-q"><span class="dd-q-num">3</span><span><span class="en-only"><strong>Trade press list</strong> — which 3–5 publications, and who has the relationship.</span><span class="cs-only"><strong>Seznam odborných médií</strong> — kterých 3–5 titulů a kdo tam má kontakt.</span></span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <div class="nav-footer-side">
+      <button class="nav-btn home" onclick="goTo('cover')">← <span class="en-only">Home</span><span class="cs-only">Domů</span></button>
+      <button class="nav-btn" onclick="goTo('phase2')"><span class="en-only">Back · Phase 2</span><span class="cs-only">Zpět · Fáze 2</span></button>
+    </div>
+    <div class="nav-footer-side">
+      <button class="nav-btn primary" onclick="goTo('phase4')"><span class="en-only">Phase 4 · Lead Engine</span><span class="cs-only">Fáze 4 · Lead Engine</span> →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PHASE 4 · LEAD ENGINE                                        -->
+<!-- ============================================================ -->
+<section class="view" id="phase4">
+
+  <div class="slide">
+    <div class="phase-slide">
+      <aside class="phase-badge" data-phase="4">
+        <span class="phase-num">4</span>
+        <span class="phase-word"><span class="en-only">PHASE</span><span class="cs-only">FÁZE</span></span>
+      </aside>
+      <div class="phase-body">
+        <h2 class="phase-title"><span class="en-only">New Lead Engine</span><span class="cs-only">Nový lead engine</span></h2>
+        <p class="phase-sub">
+          <span class="en-only">Week 2+ — Bring in new prospects under the Fluenix brand</span>
+          <span class="cs-only">Od 2. týdne — Přivádět nové zájemce pod značkou Fluenix</span>
+        </p>
+
+        <div class="stack-list">
+          <div class="stack-og">
+            <div class="stack-og-accent"></div>
+            <div class="stack-og-body">
+              <div class="stack-og-head">
+                <div class="stack-og-title"><span class="en-only">Remarketing Campaign</span><span class="cs-only">Remarketingová kampaň</span></div>
+                <div class="stack-og-tag">"<span class="en-only">We're Back, Better</span><span class="cs-only">Jsme zpět, ještě lepší</span>"</div>
+              </div>
+              <div class="stack-og-text"><span class="en-only">Retarget all site visitors from the past 12 months who didn't convert. Show them the upgraded Fluenix brand.</span><span class="cs-only">Retargetovat všechny návštěvníky webu za posledních 12 měsíců, kteří neprovedli konverzi. Ukázat jim novou značku Fluenix.</span></div>
+            </div>
+          </div>
+          <div class="stack-og">
+            <div class="stack-og-accent"></div>
+            <div class="stack-og-body">
+              <div class="stack-og-head">
+                <div class="stack-og-title"><span class="en-only">Lead Magnet Launch</span><span class="cs-only">Spuštění lead magnetu</span></div>
+                <div class="stack-og-tag"><span class="en-only">Webinar / Professional Guide</span><span class="cs-only">Webinář / odborný průvodce</span></div>
+              </div>
+              <div class="stack-og-text"><span class="en-only">Release new branded content. Creates buzz: "There's a serious new player in fleet automation."</span><span class="cs-only">Nový obsah pod značkou. Vytvoří rozruch: „Ve flotilové automatizaci je nový vážný hráč.“</span></div>
+            </div>
+          </div>
+          <div class="stack-og">
+            <div class="stack-og-accent"></div>
+            <div class="stack-og-body">
+              <div class="stack-og-head">
+                <div class="stack-og-title"><span class="en-only">Need-Based Search Ads</span><span class="cs-only">Reklamy podle potřeb</span></div>
+                <div class="stack-og-tag"><span class="en-only">Google Campaigns</span><span class="cs-only">Kampaně v Google</span></div>
+              </div>
+              <div class="stack-og-text"><span class="en-only">Target intent keywords (e.g. "fuel management system") — not the brand name. Drive to Fluenix solution pages.</span><span class="cs-only">Cílit na klíčová slova s nákupním záměrem (např. „správa paliva“) — ne na název značky. Vést na stránky řešení Fluenix.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="drilldown">
+    <header class="dd-header">
+      <div class="dd-header-badge">4</div>
+      <div class="dd-header-text">
+        <h3><span class="en-only">Drill-down · Turning launch into pipeline</span><span class="cs-only">Detail · Ze spuštění do pipeline</span></h3>
+        <p><span class="en-only">Where new revenue comes from post-rebrand</span><span class="cs-only">Odkud přijdou nové obchodní příležitosti po rebrandu</span></p>
+      </div>
+    </header>
+
+    <div class="dd-body">
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Remarketing</span><span class="cs-only">Remarketing</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">1.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Audience source</strong> — 12 months of website visitors + LinkedIn engagement audience. Excludes existing customers.</span><span class="cs-only"><strong>Zdroj publika</strong> — 12 měsíců návštěvníků webu + publikum angažované na LinkedIn. Bez stávajících zákazníků.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">1.2</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Channels</strong> — LinkedIn Ads primary for decision-makers. Meta secondary for CZ SME reach.</span><span class="cs-only"><strong>Kanály</strong> — LinkedIn Ads pro rozhodovatele. Meta doplňkově pro české malé a střední firmy.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Lead Magnet</span><span class="cs-only">Lead magnet</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">2.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Format decision</strong> — Czech webinar or a downloadable guide? Webinar earns higher-intent leads; guide scales further.</span><span class="cs-only"><strong>Rozhodnutí o formátu</strong> — český webinář, nebo stažitelný průvodce? Webinář přivede kvalitnější leady; průvodce se lépe škáluje.</span></div>
+            <span class="dd-item-meta">Marketing / Sales</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">2.2</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Topic anchor</strong> — "How Czech fleets cut fuel loss by 10–20%." Speaks directly to buying trigger.</span><span class="cs-only"><strong>Nosné téma</strong> — „Jak české flotily snižují ztráty paliva o 10–20 %.“ Míří přímo na nákupní spouštěč.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-section">
+        <h4 class="dd-section-title"><span class="en-only">Search — need-based</span><span class="cs-only">Vyhledávání — podle potřeb</span></h4>
+        <div class="dd-items">
+          <div class="dd-item">
+            <span class="dd-item-marker">3.1</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Keyword cluster</strong> — správa paliva, palivový management, RFID tankování, kontrola paliva ve flotile.</span><span class="cs-only"><strong>Skupina klíčových slov</strong> — správa paliva, palivový management, RFID tankování, kontrola paliva ve flotile.</span></div>
+            <span class="dd-item-meta">Marketing</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-marker">3.2</span>
+            <div class="dd-item-body"><span class="en-only"><strong>Landing per intent</strong> — each keyword cluster maps to a solution page, not the homepage. Requires the 4 empty Solution pages fixed in Phase 1.</span><span class="cs-only"><strong>Landing podle záměru</strong> — každá skupina klíčových slov míří na stránku řešení, ne homepage. Vyžaduje opravu 4 prázdných stránek řešení z Fáze 1.</span></div>
+            <span class="dd-item-meta">Dev / Marketing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-decisions">
+        <div class="dd-decisions-title"><span class="en-only">Decisions for this meeting</span><span class="cs-only">Rozhodnutí na této schůzce</span></div>
+        <div class="dd-q"><span class="dd-q-num">1</span><span><span class="en-only"><strong>Lead magnet format</strong> — webinar or guide.</span><span class="cs-only"><strong>Formát lead magnetu</strong> — webinář, nebo průvodce.</span></span></div>
+        <div class="dd-q"><span class="dd-q-num">2</span><span><span class="en-only"><strong>Total ad budget</strong> — split across Google, Seznam, LinkedIn, Meta.</span><span class="cs-only"><strong>Celkový reklamní rozpočet</strong> — rozdělení mezi Google, Seznam, LinkedIn, Meta.</span></span></div>
+        <div class="dd-q"><span class="dd-q-num">3</span><span><span class="en-only"><strong>Solution-page owner</strong> — the 4 missing pages must exist before need-based ads can run.</span><span class="cs-only"><strong>Vlastník stránek řešení</strong> — 4 chybějící stránky musí existovat, než mohou běžet reklamy podle potřeb.</span></span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <div class="nav-footer-side">
+      <button class="nav-btn home" onclick="goTo('cover')">← <span class="en-only">Home</span><span class="cs-only">Domů</span></button>
+      <button class="nav-btn" onclick="goTo('phase3')"><span class="en-only">Back · Phase 3</span><span class="cs-only">Zpět · Fáze 3</span></button>
+    </div>
+    <div class="nav-footer-side">
+      <button class="nav-btn" onclick="goTo('cover')"><span class="en-only">Back to Overview</span><span class="cs-only">Zpět na přehled</span></button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+  // ---- View switching ----
+  const views = document.querySelectorAll('.view');
+  const navBtns = document.querySelectorAll('.nav button');
+
+  function goTo(id){
+    views.forEach(v => v.classList.toggle('active', v.id === id));
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+    window.scrollTo({top:0, behavior:'smooth'});
+    // update hash for back/forward
+    if (history.pushState) history.pushState({view:id}, '', '#' + id);
+  }
+
+  // Deep-linking + back button
+  window.addEventListener('popstate', (e) => {
+    const id = (location.hash || '#cover').slice(1);
+    if (document.getElementById(id)) {
+      views.forEach(v => v.classList.toggle('active', v.id === id));
+      navBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+    }
+  });
+  if (location.hash && document.getElementById(location.hash.slice(1))) {
+    goTo(location.hash.slice(1));
+  }
+
+  // ---- Language switching ----
+  function setLang(l){
+    document.documentElement.setAttribute('data-lang', l);
+    document.documentElement.setAttribute('lang', l);
+    document.querySelectorAll('.lang-toggle button').forEach(b =>
+      b.classList.toggle('active', b.dataset.lang === l)
+    );
+    try { localStorage.setItem('fluenix-lang', l); } catch(e){}
+  }
+  try {
+    const saved = localStorage.getItem('fluenix-lang');
+    if (saved === 'cs' || saved === 'en') setLang(saved);
+  } catch(e){}
+
+  // ---- Keyboard nav ----
+  const order = ['cover','phase1','phase2','phase3','phase4'];
+  document.addEventListener('keydown', (e) => {
+    if (e.target.matches('input,textarea,select')) return;
+    const current = document.querySelector('.view.active').id;
+    const i = order.indexOf(current);
+    if (e.key === 'ArrowRight' && i < order.length - 1) goTo(order[i+1]);
+    if (e.key === 'ArrowLeft' && i > 0) goTo(order[i-1]);
+    if (e.key === 'Home') goTo('cover');
+  });
+</script>
+
+</body>
+</html>
