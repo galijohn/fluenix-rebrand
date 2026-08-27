@@ -399,8 +399,24 @@
     width:12px;height:12px;background:var(--ink);transform:rotate(45deg);
   }
   .info-wrap.open .info-pop{display:block}
-  .info-pop b{color:#7DD3C7;display:block;margin-bottom:8px;
+  .info-pop b{color:#7DD3C7;display:block;margin-bottom:10px;
     font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .info-pop strong{color:#fff;font-weight:700}
+  .info-pop a{color:#7DD3C7;text-decoration:underline;text-underline-offset:2px;word-break:break-all}
+  .info-pop a:hover{color:#fff}
+  .info-pop ol{margin:0;padding-left:22px;list-style:none;counter-reset:info-step}
+  .info-pop ol li{position:relative;margin-bottom:10px;padding-left:4px}
+  .info-pop ol li:last-child{margin-bottom:0}
+  .info-pop ol li::before{
+    counter-increment:info-step;content:counter(info-step);
+    position:absolute;left:-22px;top:0;
+    width:18px;height:18px;border-radius:50%;
+    background:var(--teal);color:#fff;
+    font-size:11px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .info-pop .foot{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12);
+    font-size:12.5px;color:rgba(255,255,255,.75);font-style:italic}
   @keyframes popIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
   @media (max-width:600px){
     .info-pop{width:280px;right:auto;left:-8px}
@@ -883,7 +899,7 @@
         <div class="dd-items">
           <div class="dd-item">
             <span class="dd-item-marker">4.1</span>
-            <div class="dd-item-body"><span class="en-only"><strong>Day 1 checklist</strong> — GA4 tracking fluenix.eu, Tag Manager firing, Search Console verified for the new domain, 301s returning 200 at destinations.</span><span class="cs-only"><strong>Checklist prvního dne</strong> — GA4 měří fluenix.eu, Tag Manager funguje, Search Console ověřený pro novou doménu, 301 přesměrování vrací 200 na cílech.</span><span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">What to check &amp; where</span><span class="cs-only">Co zkontrolovat a kde</span></b><span class="en-only"><strong>1. GA4 receiving visits →</strong> analytics.google.com → property "fluenix.eu" → Reports → Realtime. Should show live users.<br><br><strong>2. Tag Manager firing →</strong> tagmanager.google.com → container for fluenix.eu → Preview mode. Load the site and confirm tags fire.<br><br><strong>3. Search Console verified →</strong> search.google.com/search-console → Property "fluenix.eu" shows a green check.<br><br><strong>4. Redirects returning 200 →</strong> use httpstatus.io — paste 5–10 old fuelomat.cz URLs. Each should show 301 → 200 at fluenix.eu. Not 404, not 500.<br><br>Without this, we lose weeks of tracking data.</span><span class="cs-only"><strong>1. GA4 přijímá návštěvy →</strong> analytics.google.com → property „fluenix.eu“ → Přehledy → Reálný čas. Musí zobrazit živé uživatele.<br><br><strong>2. Tag Manager spouští →</strong> tagmanager.google.com → kontejner pro fluenix.eu → režim Náhled. Načíst web a ověřit, že se tagy spouštějí.<br><br><strong>3. Search Console ověřen →</strong> search.google.com/search-console → property „fluenix.eu“ ukazuje zelenou fajfku.<br><br><strong>4. Přesměrování vrací 200 →</strong> použít httpstatus.io — vložit 5–10 starých URL fuelomat.cz. U každé se má objevit 301 → 200 na fluenix.eu. Ne 404, ne 500.<br><br>Bez toho ztratíme týdny trackingových dat.</span></div></span></div>
+            <div class="dd-item-body"><span class="en-only"><strong>Day 1 checklist</strong> — GA4 tracking fluenix.eu, Tag Manager firing, Search Console verified for the new domain, 301s returning 200 at destinations.</span><span class="cs-only"><strong>Checklist prvního dne</strong> — GA4 měří fluenix.eu, Tag Manager funguje, Search Console ověřený pro novou doménu, 301 přesměrování vrací 200 na cílech.</span><span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">What to check &amp; where</span><span class="cs-only">Co zkontrolovat a kde</span></b><span class="en-only"><ol><li><strong>GA4 receiving visits</strong> — open <a href="https://analytics.google.com" target="_blank" rel="noopener">analytics.google.com</a> → property "fluenix.eu" → Reports → Realtime. Should show live users.</li><li><strong>Tag Manager firing</strong> — open <a href="https://tagmanager.google.com" target="_blank" rel="noopener">tagmanager.google.com</a> → container for fluenix.eu → Preview. Load the site and confirm tags fire.</li><li><strong>Search Console verified</strong> — open <a href="https://search.google.com/search-console" target="_blank" rel="noopener">search.google.com/search-console</a>. Property "fluenix.eu" must show a green check.</li><li><strong>Redirects returning 200</strong> — open <a href="https://httpstatus.io" target="_blank" rel="noopener">httpstatus.io</a>, paste 5–10 old fuelomat.cz URLs. Each must show 301 → 200 at fluenix.eu. Not 404, not 500.</li></ol><div class="foot">Without this, we lose weeks of tracking data.</div></span><span class="cs-only"><ol><li><strong>GA4 přijímá návštěvy</strong> — otevři <a href="https://analytics.google.com" target="_blank" rel="noopener">analytics.google.com</a> → property „fluenix.eu“ → Přehledy → Reálný čas. Musí zobrazit živé uživatele.</li><li><strong>Tag Manager spouští</strong> — otevři <a href="https://tagmanager.google.com" target="_blank" rel="noopener">tagmanager.google.com</a> → kontejner pro fluenix.eu → Náhled. Načti web a ověř, že se tagy spouštějí.</li><li><strong>Search Console ověřen</strong> — otevři <a href="https://search.google.com/search-console" target="_blank" rel="noopener">search.google.com/search-console</a>. Property „fluenix.eu“ musí ukazovat zelenou fajfku.</li><li><strong>Přesměrování vrací 200</strong> — otevři <a href="https://httpstatus.io" target="_blank" rel="noopener">httpstatus.io</a>, vlož 5–10 starých URL fuelomat.cz. U každé se má objevit 301 → 200 na fluenix.eu. Ne 404, ne 500.</li></ol><div class="foot">Bez toho ztratíme týdny trackingových dat.</div></span></div></span></div>
             <span class="dd-item-meta">Dev</span>
           </div>
         </div>
