@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinkedIn post — Fluenix rebrand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#00A896;
+    --teal-2:#008678;
+    --teal-3:#007368;
+    --wash:#E5F6F4;
+    --ink:#2B2D2F;
+    --ink-2:#4C4E50;
+    --ink-3:#808182;
+    --line:#E5E5E5;
+    --paper:#FFFFFF;
+    --li-blue:#0A66C2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Figtree',system-ui,sans-serif;
+    background:#F3F2EF;color:var(--ink);
+    line-height:1.55;min-height:100vh;
+    padding:32px 20px;
+  }
+  .wrap{max-width:720px;margin:0 auto}
+
+  header{
+    background:#fff;border-radius:12px;padding:20px 24px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+    margin-bottom:20px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  header h1{font-size:16px;font-weight:700;color:var(--ink)}
+  header p{font-size:13px;color:var(--ink-3);margin-top:2px}
+  .lang-toggle{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .lang-toggle button{
+    background:#fff;border:none;padding:8px 14px;
+    font-family:inherit;font-size:12px;font-weight:600;color:var(--ink-3);
+    cursor:pointer;letter-spacing:.05em;
+  }
+  .lang-toggle button.active{background:var(--ink);color:#fff}
+
+  /* LinkedIn card preview */
+  .li-card{
+    background:#fff;border-radius:12px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+    margin-bottom:20px;
+  }
+  .li-head{
+    display:flex;align-items:center;gap:12px;
+    padding:16px 20px 8px;
+  }
+  .li-avatar{
+    width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg,#2B2D2F 0%,#4C4E50 100%);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:20px;flex:none;
+  }
+  .li-author{flex:1}
+  .li-author .name{font-size:15px;font-weight:700;color:var(--ink)}
+  .li-author .title{font-size:13px;color:var(--ink-3);line-height:1.35}
+  .li-author .meta{font-size:12px;color:var(--ink-3);margin-top:2px}
+  .li-body{
+    padding:8px 20px 16px;font-size:15px;color:var(--ink-2);
+    white-space:pre-wrap;line-height:1.55;
+  }
+  .li-body strong{color:var(--ink)}
+  .li-body a{color:var(--li-blue);text-decoration:none}
+  .li-image{
+    background:linear-gradient(135deg,#FFFFFF 0%,#E5F6F4 100%);
+    padding:32px 40px;position:relative;overflow:hidden;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .li-image .card-top{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;padding:5px 12px;border-radius:16px;
+    border:1px solid #D0EEE9;font-size:10px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--teal-3);
+    margin-bottom:20px;
+  }
+  .li-image .card-top .dot{width:6px;height:6px;background:var(--teal);border-radius:50%}
+  .li-image .logo-row{
+    display:flex;align-items:center;justify-content:center;gap:32px;
+    margin-bottom:16px;
+  }
+  .li-image .logo-row .old{height:38px;opacity:.4;filter:grayscale(.5)}
+  .li-image .logo-row .arrow{font-size:32px;font-weight:700;color:var(--teal)}
+  .li-image .logo-row .new{height:52px}
+  .li-image .headline{
+    text-align:center;font-size:24px;font-weight:700;color:var(--ink);
+    line-height:1.2;margin-bottom:18px;
+  }
+  .li-image .headline .accent{color:var(--teal)}
+  .li-image .stats-row{
+    display:flex;justify-content:space-around;padding-top:14px;
+    border-top:1px solid rgba(43,45,47,.08);text-align:center;
+  }
+  .li-image .stat strong{
+    color:var(--ink);font-weight:700;font-size:15px;display:block;
+  }
+  .li-image .stat span{font-size:11px;color:var(--ink-3)}
+  .li-image::before{
+    content:'';position:absolute;
+    right:-80px;bottom:-80px;
+    width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle,var(--teal) 0%,transparent 65%);
+    opacity:.12;
+  }
+  .li-actions{
+    display:flex;justify-content:space-around;padding:8px 4px;
+    border-top:1px solid var(--line);
+  }
+  .li-actions button{
+    background:none;border:none;color:var(--ink-3);font-family:inherit;
+    padding:10px;font-size:13px;font-weight:600;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+  }
+
+  /* Sidebar with the raw post text + copy button */
+  .side{
+    background:#fff;border-radius:12px;padding:20px 24px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  .side-title{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:14px;
+  }
+  .side-title h2{font-size:15px;font-weight:700;color:var(--ink)}
+  .side-title .count{font-size:12px;color:var(--ink-3);font-family:monospace}
+  .copy-btn{
+    background:var(--teal);color:#fff;border:none;
+    padding:8px 14px;border-radius:8px;
+    font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .copy-btn:hover{background:var(--teal-2)}
+  .side textarea{
+    width:100%;min-height:340px;
+    border:1px solid var(--line);border-radius:8px;
+    padding:14px;font-family:inherit;font-size:14px;line-height:1.6;
+    color:var(--ink);background:#FAFAF9;resize:vertical;
+  }
+  .side textarea:focus{outline:none;border-color:var(--teal)}
+
+  [data-lang="en"] .cs-only,[data-lang="cs"] .en-only{display:none}
+
+  .note{
+    background:#FFF7E6;border:1px solid #FFE4A3;border-radius:8px;
+    padding:12px 14px;font-size:13px;color:#78350F;margin-top:16px;line-height:1.55;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <div>
+    <h1><span class="en-only">LinkedIn post — ready to publish</span><span class="cs-only">Příspěvek na LinkedIn — připraven k publikaci</span></h1>
+    <p><span class="en-only">Post from Jan Kligl's personal profile · goes live Day 4</span><span class="cs-only">Příspěvek z osobního profilu Jana Kligla · publikace v Den 4</span></p>
+  </div>
+  <div class="lang-toggle">
+    <button data-lang="en" class="active" onclick="setLang('en')">EN</button>
+    <button data-lang="cs" onclick="setLang('cs')">CZ</button>
+  </div>
+</header>
+
+<!-- LinkedIn-styled preview -->
+<div class="li-card">
+  <div class="li-head">
+    <div class="li-avatar">JK</div>
+    <div class="li-author">
+      <div class="name">Jan Kligl</div>
+      <div class="title">CEO at Fluenix (formerly FuelOmat) · Fleet automation without disruption</div>
+      <div class="meta">Now · <span class="en-only">Publishing to your network</span><span class="cs-only">Publikováno do sítě</span></div>
+    </div>
+  </div>
+
+  <div class="li-body">
+<span class="en-only">Seventeen years ago, we asked one stubborn question: how do you actually stop fuel theft when the card-based systems everyone else used kept failing?
+
+That question became FuelOmat.
+
+Today, the same team is stepping into a bigger role — and a bigger name.
+
+<strong>From today, we are Fluenix.</strong>
+
+Same people. Same phone numbers. Same commitment. Wider platform:
+→ Fluenix Fuel
+→ Fluenix Infrastructure
+→ Fluenix Access
+→ Fluenix E-Mobility
+→ Custom Fleet Systems
+
+Nothing that works today breaks. Every product runs. Every login opens the same account. Every contract stands. Emails to @fuelomat.cz still arrive — @fluenix.eu is now our preferred address, but both work in parallel.
+
+The number that matters: 45,000 vehicles across Europe, Africa and global aviation hubs still run on what we started building in 2008. That is the relationship we are doubling down on.
+
+Read the full story of why we changed our name → <a href="https://fluenix.eu/blog/why-we-rebranded">fluenix.eu/blog/why-we-rebranded</a>
+
+#Rebrand #Fluenix #FleetManagement #FuelAutomation #Logistics</span><span class="cs-only">Před sedmnácti lety jsme si položili jednu tvrdošíjnou otázku: jak vlastně zastavit krádeže paliva, když karetní systémy, které používali všichni ostatní, opakovaně selhávaly?
+
+Ta otázka se stala FuelOmatem.
+
+Dnes stejný tým přechází do větší role — a k většímu jménu.
+
+<strong>Od dnešního dne jsme Fluenix.</strong>
+
+Stejní lidé. Stejná telefonní čísla. Stejný závazek. Širší platforma:
+→ Fluenix Fuel
+→ Fluenix Infrastructure
+→ Fluenix Access
+→ Fluenix E-Mobility
+→ Custom Fleet Systems
+
+Nic, co dnes funguje, se nemění. Každý produkt jede. Každé přihlášení otevírá stejný účet. Každá smlouva platí. E-maily na @fuelomat.cz stále přicházejí — @fluenix.eu je nyní preferovaná adresa, ale obě fungují souběžně.
+
+Číslo, na kterém záleží: 45 000 vozidel napříč Evropou, Afrikou a leteckými uzly stále běží na tom, co jsme začali stavět v roce 2008. Do tohoto vztahu investujeme ještě víc.
+
+Přečtěte si celý příběh, proč jsme změnili jméno → <a href="https://fluenix.eu/blog/why-we-rebranded">fluenix.eu/blog/why-we-rebranded</a>
+
+#Rebrand #Fluenix #FleetManagement #FuelAutomation #Logistika</span></div>
+
+  <!-- The image attached to the post -->
+  <div class="li-image">
+    <div class="card-top">
+      <span class="dot"></span>
+      <span class="en-only">Rebrand announcement</span><span class="cs-only">Oznámení rebrandu</span>
+    </div>
+    <div class="logo-row">
+      <img src="fuelomat-logo.png" class="old" alt="FuelOmat">
+      <span class="arrow">→</span>
+      <img src="fluenix-logo.png" class="new" alt="Fluenix">
+    </div>
+    <div class="headline">
+      <span class="en-only">Same team. Sharper mission. <span class="accent">New name.</span></span>
+      <span class="cs-only">Stejný tým. Ostřejší poslání. <span class="accent">Nové jméno.</span></span>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><strong>17</strong><span class="en-only">years since 2008</span><span class="cs-only">let od 2008</span></div>
+      <div class="stat"><strong>850+</strong><span class="en-only">fuel stations</span><span class="cs-only">čerpacích stanic</span></div>
+      <div class="stat"><strong>45,000+</strong><span class="en-only">vehicles</span><span class="cs-only">vozidel</span></div>
+    </div>
+  </div>
+
+  <div class="li-actions">
+    <button>👍 <span class="en-only">Like</span><span class="cs-only">To se mi líbí</span></button>
+    <button>💬 <span class="en-only">Comment</span><span class="cs-only">Komentář</span></button>
+    <button>🔄 <span class="en-only">Repost</span><span class="cs-only">Sdílet</span></button>
+    <button>📤 <span class="en-only">Send</span><span class="cs-only">Poslat</span></button>
+  </div>
+</div>
+
+<!-- Raw post text + copy button -->
+<div class="side">
+  <div class="side-title">
+    <h2><span class="en-only">Post text (copy this)</span><span class="cs-only">Text příspěvku (zkopírujte)</span></h2>
+    <div style="display:flex;gap:12px;align-items:center">
+      <span class="count" id="count-en">0 chars</span>
+      <button class="copy-btn" onclick="copyPost()"><span class="en-only">Copy post</span><span class="cs-only">Zkopírovat</span></button>
+    </div>
+  </div>
+  <textarea id="post-en" class="en-only">Seventeen years ago, we asked one stubborn question: how do you actually stop fuel theft when the card-based systems everyone else used kept failing?
+
+That question became FuelOmat.
+
+Today, the same team is stepping into a bigger role — and a bigger name.
+
+From today, we are Fluenix.
+
+Same people. Same phone numbers. Same commitment. Wider platform:
+→ Fluenix Fuel
+→ Fluenix Infrastructure
+→ Fluenix Access
+→ Fluenix E-Mobility
+→ Custom Fleet Systems
+
+Nothing that works today breaks. Every product runs. Every login opens the same account. Every contract stands. Emails to @fuelomat.cz still arrive — @fluenix.eu is now our preferred address, but both work in parallel.
+
+The number that matters: 45,000 vehicles across Europe, Africa and global aviation hubs still run on what we started building in 2008. That is the relationship we are doubling down on.
+
+Read the full story of why we changed our name → fluenix.eu/blog/why-we-rebranded
+
+#Rebrand #Fluenix #FleetManagement #FuelAutomation #Logistics</textarea>
+  <textarea id="post-cs" class="cs-only">Před sedmnácti lety jsme si položili jednu tvrdošíjnou otázku: jak vlastně zastavit krádeže paliva, když karetní systémy, které používali všichni ostatní, opakovaně selhávaly?
+
+Ta otázka se stala FuelOmatem.
+
+Dnes stejný tým přechází do větší role — a k většímu jménu.
+
+Od dnešního dne jsme Fluenix.
+
+Stejní lidé. Stejná telefonní čísla. Stejný závazek. Širší platforma:
+→ Fluenix Fuel
+→ Fluenix Infrastructure
+→ Fluenix Access
+→ Fluenix E-Mobility
+→ Custom Fleet Systems
+
+Nic, co dnes funguje, se nemění. Každý produkt jede. Každé přihlášení otevírá stejný účet. Každá smlouva platí. E-maily na @fuelomat.cz stále přicházejí — @fluenix.eu je nyní preferovaná adresa, ale obě fungují souběžně.
+
+Číslo, na kterém záleží: 45 000 vozidel napříč Evropou, Afrikou a leteckými uzly stále běží na tom, co jsme začali stavět v roce 2008. Do tohoto vztahu investujeme ještě víc.
+
+Přečtěte si celý příběh, proč jsme změnili jméno → fluenix.eu/blog/why-we-rebranded
+
+#Rebrand #Fluenix #FleetManagement #FuelAutomation #Logistika</textarea>
+
+  <div class="note">
+    <span class="en-only"><strong>Publishing checklist:</strong> Post from Jan Kligl's personal profile (not the company page — people engage with people). Attach the image from linkedin-image.html above. Publish on Day 4 morning (09:00 CET). Every team member reshares within 2 hours — that's the multiplier.</span>
+    <span class="cs-only"><strong>Checklist publikace:</strong> Publikujte z osobního profilu Jana Kligla (ne z firemní stránky — lidé reagují na lidi). Přiložte obrázek z linkedin-image.html výše. Publikace v Den 4 ráno (09:00 SEČ). Každý člen týmu sdílí do 2 hodin — to je multiplikátor.</span>
+  </div>
+</div>
+
+</div>
+
+<script>
+  function setLang(l){
+    document.documentElement.setAttribute('data-lang', l);
+    document.documentElement.setAttribute('lang', l);
+    document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+    updateCount();
+  }
+  function updateCount(){
+    const lang = document.documentElement.getAttribute('data-lang') || 'en';
+    const ta = document.getElementById('post-' + lang);
+    if (ta) document.getElementById('count-en').textContent = ta.value.length + ' chars';
+  }
+  function copyPost(){
+    const lang = document.documentElement.getAttribute('data-lang') || 'en';
+    const ta = document.getElementById('post-' + lang);
+    if (!ta) return;
+    ta.select();
+    document.execCommand('copy');
+    const btn = document.querySelector('.copy-btn');
+    const old = btn.innerHTML;
+    btn.innerHTML = '✓ Copied';
+    setTimeout(() => btn.innerHTML = old, 1600);
+  }
+  updateCount();
+</script>
+
+</body>
+</html>
