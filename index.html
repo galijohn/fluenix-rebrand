@@ -370,6 +370,43 @@
     .dd-item{grid-template-columns:auto auto 1fr}
   }
 
+  /* ============ INFO TOOLTIP ============ */
+  .info-wrap{position:relative;display:inline-block;vertical-align:middle;margin-left:8px}
+  .info-btn{
+    width:20px;height:20px;border-radius:50%;
+    background:var(--wash);color:var(--teal-3);
+    border:1px solid var(--wash-2);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:Georgia,serif;font-style:italic;font-weight:700;font-size:13px;
+    cursor:pointer;flex:none;line-height:1;padding:0;
+    transition:background .12s,color .12s,border-color .12s;
+  }
+  .info-btn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .info-btn:focus{outline:2px solid var(--teal);outline-offset:2px}
+  .info-wrap.open .info-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .info-pop{
+    position:absolute;top:calc(100% + 10px);right:-8px;
+    background:var(--ink);color:#fff;
+    padding:14px 16px 15px;border-radius:8px;
+    font-size:13.5px;line-height:1.6;font-weight:400;
+    width:340px;max-width:calc(100vw - 40px);z-index:120;
+    box-shadow:0 12px 32px rgba(15,31,46,.28);
+    display:none;text-align:left;
+    animation:popIn .18s ease-out;
+  }
+  .info-pop::before{
+    content:'';position:absolute;top:-6px;right:12px;
+    width:12px;height:12px;background:var(--ink);transform:rotate(45deg);
+  }
+  .info-wrap.open .info-pop{display:block}
+  .info-pop b{color:#7DD3C7;display:block;margin-bottom:8px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  @keyframes popIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  @media (max-width:600px){
+    .info-pop{width:280px;right:auto;left:-8px}
+    .info-pop::before{right:auto;left:12px}
+  }
+
   /* ============ SAVE PROGRESS BUTTON ============ */
   .save-progress{
     position:fixed;bottom:22px;right:22px;z-index:200;
@@ -575,6 +612,7 @@
             <div class="dd-item-body">
               <span class="en-only"><strong>Full URL inventory of fuelomat.cz</strong> — every page mapped to its destination on fluenix.eu.</span>
               <span class="cs-only"><strong>Kompletní inventura URL fuelomat.cz</strong> — každá stránka namapována na cílovou adresu na fluenix.eu.</span>
+              <span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">How-to</span><span class="cs-only">Jak na to</span></b><span class="en-only">Dev exports a list of every page currently live on fuelomat.cz (from its sitemap). Next to each page they write down where it should land on fluenix.eu. Pages without a direct match go to the homepage. This spreadsheet becomes the plan the redirects follow — nothing is decided on launch day.</span><span class="cs-only">Vývojáři exportují seznam všech aktuálně živých stránek na fuelomat.cz (ze sitemapy). Ke každé stránce dopíšou, kam má směřovat na fluenix.eu. Stránky bez přímé shody jdou na homepage. Tento seznam je plán, podle kterého se pak nastaví přesměrování — v den spuštění se už nic nerozhoduje.</span></div></span>
             </div>
             <span class="dd-item-meta">Dev</span>
           </div>
@@ -583,6 +621,7 @@
             <div class="dd-item-body">
               <span class="en-only"><strong>301 redirects live</strong> before launch day, tested from Google Search Console.</span>
               <span class="cs-only"><strong>301 přesměrování naživo</strong> ještě před spuštěním, otestováno v Google Search Console.</span>
+              <span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">How-to</span><span class="cs-only">Jak na to</span></b><span class="en-only">A "301 redirect" is an automatic permanent forwarding rule the old server follows. When someone visits fuelomat.cz/anything, they instantly land on the matching page at fluenix.eu. Dev sets it up on the old server following the map from 1.1, then verifies inside Google Search Console (Google's dashboard for site owners) that Google itself already sees the redirects working — before launch day, not after.</span><span class="cs-only">„301 přesměrování“ je automatické trvalé přesměrování, které starý server dodržuje. Když někdo přijde na fuelomat.cz/cokoli, okamžitě dorazí na odpovídající stránku na fluenix.eu. Dev to nasadí na starém serveru podle plánu z bodu 1.1 a ověří v Google Search Console (dashboard Googlu pro majitele webů), že přesměrování už vidí i Google — ještě před spuštěním, ne po něm.</span></div></span>
             </div>
             <span class="dd-item-meta">Dev</span>
           </div>
@@ -621,6 +660,7 @@
             <div class="dd-item-body">
               <span class="en-only"><strong>Website bug fixes</strong> — social icons (all point to Facebook), Login button (still fuelomat.cz), 4 empty Solution pages, footer "@ Fluenix" typo.</span>
               <span class="cs-only"><strong>Opravy chyb na webu</strong> — ikony sítí (všechny míří na Facebook), tlačítko Login (stále fuelomat.cz), 4 prázdné stránky řešení, překlep „@ Fluenix“ v patičce.</span>
+              <span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">Fix list</span><span class="cs-only">Seznam oprav</span></b><span class="en-only">Four visible bugs on the new site: (1) all social icons currently link to the same Facebook page — must go to the correct platform or be removed if we don't have that channel. (2) Login button still points to fuelomat.cz — must point to the new portal/CRM. (3) Four Solution pages are empty — fill them or remove from the menu. (4) Footer shows "@ Fluenix" instead of "© Fluenix". Fix before we invite traffic, otherwise the site looks unfinished at the moment of first impression.</span><span class="cs-only">Čtyři viditelné chyby na novém webu: (1) ikony sociálních sítí vedou na stejnou facebookovou stránku — musí vést na správnou platformu, nebo pryč, pokud daný kanál nemáme. (2) Tlačítko Login stále míří na fuelomat.cz — musí směřovat na nový portál/CRM. (3) Čtyři stránky Solution jsou prázdné — vyplnit nebo odstranit z menu. (4) V patičce je „@ Fluenix“ místo „© Fluenix“. Opravit dřív, než pošleme provoz — jinak působí web nedodělaně v okamžiku prvního dojmu.</span></div></span>
             </div>
             <span class="dd-item-meta">Dev</span>
           </div>
@@ -785,7 +825,7 @@
           </div>
           <div class="dd-item">
             <span class="dd-item-marker">1.2</span>
-            <div class="dd-item-body"><span class="en-only"><strong>Google Business Profile</strong> — flip to "Fluenix (formerly FuelOmat)" same hour.</span><span class="cs-only"><strong>Google Business Profile</strong> — přepnout na „Fluenix (dříve FuelOmat)“ ve stejnou hodinu.</span></div>
+            <div class="dd-item-body"><span class="en-only"><strong>Google Business Profile</strong> — flip to "Fluenix (formerly FuelOmat)" same hour.</span><span class="cs-only"><strong>Google Business Profile</strong> — přepnout na „Fluenix (dříve FuelOmat)“ ve stejnou hodinu.</span><span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">How-to</span><span class="cs-only">Jak na to</span></b><span class="en-only">business.google.com is where Google's business listings are managed — the card that appears next to search results with map, hours and reviews. Log in with the account that manages FuelOmat's listing. Rename the existing profile from FuelOmat to Fluenix (keep the same profile — do not create a new one, or reviews and history are lost). Add "Formerly known as FuelOmat" in the description. Google reviews the name change within 24 h – 3 days. Update logo, cover image and website URL in the same session.</span><span class="cs-only">business.google.com je místo, kde se spravují firemní záznamy v Googlu — karta vedle výsledků vyhledávání s mapou, otevírací dobou a recenzemi. Přihlaste se účtem, který spravuje profil FuelOmat. Přejmenujte stávající profil z FuelOmat na Fluenix (ponechte stejný profil — nezakládejte nový, jinak přijdete o recenze a historii). Do popisu přidejte „Dříve známé jako FuelOmat“. Google změnu jména schválí do 24 h – 3 dnů. Ve stejné relaci aktualizujte logo, obálku a URL webu.</span></div></span></div>
             <span class="dd-item-meta">Marketing</span>
           </div>
           <div class="dd-item new">
@@ -843,7 +883,7 @@
         <div class="dd-items">
           <div class="dd-item">
             <span class="dd-item-marker">4.1</span>
-            <div class="dd-item-body"><span class="en-only"><strong>Day 1 checklist</strong> — GA4 tracking fluenix.eu, Tag Manager firing, Search Console verified for the new domain, 301s returning 200 at destinations.</span><span class="cs-only"><strong>Checklist prvního dne</strong> — GA4 měří fluenix.eu, Tag Manager funguje, Search Console ověřený pro novou doménu, 301 přesměrování vrací 200 na cílech.</span></div>
+            <div class="dd-item-body"><span class="en-only"><strong>Day 1 checklist</strong> — GA4 tracking fluenix.eu, Tag Manager firing, Search Console verified for the new domain, 301s returning 200 at destinations.</span><span class="cs-only"><strong>Checklist prvního dne</strong> — GA4 měří fluenix.eu, Tag Manager funguje, Search Console ověřený pro novou doménu, 301 přesměrování vrací 200 na cílech.</span><span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">What we verify</span><span class="cs-only">Co ověřujeme</span></b><span class="en-only">Four checks the day the site goes live: (1) Google Analytics 4 (GA4) is receiving visits from fluenix.eu, not the old domain. (2) Google Tag Manager (the tool that controls tracking codes) is firing correctly. (3) Google Search Console (Google's dashboard for site owners) has fluenix.eu added and verified. (4) The redirects from fuelomat.cz return HTTP status 200 at the destination — meaning users land successfully, not on an error. Without this, we lose weeks of tracking data.</span><span class="cs-only">Čtyři kontroly v den spuštění: (1) Google Analytics 4 (GA4) přijímá návštěvy z fluenix.eu, ne ze staré domény. (2) Google Tag Manager (nástroj řídící trackingové kódy) správně spouští události. (3) V Google Search Console (dashboard Googlu pro majitele webů) je fluenix.eu přidána a ověřena. (4) Přesměrování z fuelomat.cz vrací HTTP status 200 na cíli — tedy uživatelé skutečně přistávají, ne na chybové stránce. Bez toho ztratíme týdny trackingových dat.</span></div></span></div>
             <span class="dd-item-meta">Dev</span>
           </div>
         </div>
@@ -930,12 +970,12 @@
           </div>
           <div class="dd-item">
             <span class="dd-item-marker">1.2</span>
-            <div class="dd-item-body"><span class="en-only"><strong>Landing page</strong> — dedicated fluenix.eu/formerly-fuelomat, not the homepage. Answers "is this the same company?" above the fold.</span><span class="cs-only"><strong>Vstupní stránka</strong> — samostatná fluenix.eu/formerly-fuelomat, ne homepage. Nad záhybem odpovídá „je to stejná společnost?“.</span></div>
+            <div class="dd-item-body"><span class="en-only"><strong>Landing page</strong> — dedicated fluenix.eu/formerly-fuelomat, not the homepage. Answers "is this the same company?" above the fold.</span><span class="cs-only"><strong>Vstupní stránka</strong> — samostatná fluenix.eu/formerly-fuelomat, ne homepage. Nad záhybem odpovídá „je to stejná společnost?“.</span><span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">Why not the homepage</span><span class="cs-only">Proč ne homepage</span></b><span class="en-only">A "landing page" is a single, focused page built for one campaign. Instead of sending PPC traffic to the homepage (where the visitor has to search for the answer), we send them to fluenix.eu/formerly-fuelomat — a page whose only job is to answer, in the first screen, "yes, this is the same company; here's what changed." Higher conversion, cleaner tracking.</span><span class="cs-only">„Landing page“ je jedna zaměřená stránka postavená pro jednu kampaň. Místo posílání PPC návštěvníků na homepage (kde musí odpověď hledat) je posíláme na fluenix.eu/formerly-fuelomat — stránka, jejímž jediným úkolem je hned v prvním výřezu odpovědět „ano, je to stejná firma; tady je, co se změnilo.“ Vyšší konverze, čistší tracking.</span></div></span></div>
             <span class="dd-item-meta">Dev / Marketing</span>
           </div>
           <div class="dd-item new">
             <span class="dd-item-marker">1.3</span>
-            <div class="dd-item-body"><span class="en-only"><strong>Seznam.cz Ads</strong> — same keywords, same landing page. ~15–20% of Czech search, cheaper than Google.</span><span class="cs-only"><strong>Seznam.cz Ads</strong> — stejná klíčová slova, stejná vstupní stránka. ~15–20 % českého vyhledávání, levnější než Google.</span></div>
+            <div class="dd-item-body"><span class="en-only"><strong>Seznam.cz Ads</strong> — same keywords, same landing page. ~15–20% of Czech search, cheaper than Google.</span><span class="cs-only"><strong>Seznam.cz Ads</strong> — stejná klíčová slova, stejná vstupní stránka. ~15–20 % českého vyhledávání, levnější než Google.</span><span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">Why Seznam too</span><span class="cs-only">Proč i Seznam</span></b><span class="en-only">Seznam.cz is the Czech search engine and portal used by roughly 15–20% of Czech internet users — especially older demographics and the public sector. Its ad platform is separate from Google Ads and usually cheaper per click. For a brand-defence campaign on "FuelOmat" in Czechia, running both Google and Seznam covers effectively every Czech searcher.</span><span class="cs-only">Seznam.cz je český vyhledávač a portál, který používá zhruba 15–20 % českých uživatelů internetu — zejména starší generace a veřejný sektor. Jeho reklamní platforma je oddělená od Google Ads a bývá levnější za proklik. U kampaně na obranu značky „FuelOmat“ v ČR pokrývá kombinace Google + Seznam prakticky každého českého hledajícího.</span></div></span></div>
             <span class="dd-item-meta">Marketing</span>
           </div>
         </div>
@@ -1064,7 +1104,7 @@
         <div class="dd-items">
           <div class="dd-item">
             <span class="dd-item-marker">1.1</span>
-            <div class="dd-item-body"><span class="en-only"><strong>Audience source</strong> — 12 months of website visitors + LinkedIn engagement audience. Excludes existing customers.</span><span class="cs-only"><strong>Zdroj publika</strong> — 12 měsíců návštěvníků webu + publikum angažované na LinkedIn. Bez stávajících zákazníků.</span></div>
+            <div class="dd-item-body"><span class="en-only"><strong>Audience source</strong> — 12 months of website visitors + LinkedIn engagement audience. Excludes existing customers.</span><span class="cs-only"><strong>Zdroj publika</strong> — 12 měsíců návštěvníků webu + publikum angažované na LinkedIn. Bez stávajících zákazníků.</span><span class="info-wrap"><button type="button" class="info-btn" aria-label="More info">i</button><div class="info-pop"><b><span class="en-only">What "remarketing" means</span><span class="cs-only">Co je „remarketing“</span></b><span class="en-only">"Remarketing" (or retargeting) means showing ads specifically to people who already interacted with us. Two audience sources: (a) everyone who visited fuelomat.cz / fluenix.eu in the last 12 months — pulled from the analytics pixel, (b) people who engaged with our LinkedIn company page (liked, commented, followed) — pulled by LinkedIn Ads. We exclude existing customers so we don't waste spend on people who already pay us.</span><span class="cs-only">„Remarketing“ (nebo retargeting) znamená zobrazovat reklamy konkrétně lidem, kteří s námi už interagovali. Dva zdroje publika: (a) všichni, kdo za posledních 12 měsíců navštívili fuelomat.cz / fluenix.eu — z analytického pixelu, (b) lidé, kteří interagovali s naší firemní stránkou na LinkedIn (like, komentář, follow) — z LinkedIn Ads. Vylučujeme stávající zákazníky, ať neplatíme za oslovení těch, kdo už nám platí.</span></div></span></div>
             <span class="dd-item-meta">Marketing</span>
           </div>
           <div class="dd-item">
@@ -1168,6 +1208,25 @@
     const saved = localStorage.getItem('fluenix-lang');
     if (saved === 'cs' || saved === 'en') setLang(saved);
   } catch(e){}
+
+  // ---- Info tooltips ----
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.info-btn');
+    const openWrap = document.querySelector('.info-wrap.open');
+    if (btn) {
+      e.preventDefault(); e.stopPropagation();
+      const wrap = btn.closest('.info-wrap');
+      if (openWrap && openWrap !== wrap) openWrap.classList.remove('open');
+      wrap.classList.toggle('open');
+    } else if (openWrap && !e.target.closest('.info-pop')) {
+      openWrap.classList.remove('open');
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.info-wrap.open').forEach(w => w.classList.remove('open'));
+    }
+  });
 
   // ---- Task checkboxes with git-friendly export ----
   const PROGRESS_KEY = 'fluenix-progress-v1';
