@@ -53,10 +53,9 @@
     text-decoration:none;
   }
   .logo-mark{
-    width:32px;height:32px;background:var(--ink);border-radius:7px;
-    display:flex;align-items:center;justify-content:center;
-    color:var(--teal);font-weight:800;font-size:20px;line-height:1;
+    width:34px;height:34px;display:inline-flex;flex:none;
   }
+  .logo-mark svg{width:100%;height:100%;display:block}
   .nav{
     display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;
   }
@@ -118,19 +117,14 @@
     letter-spacing:-.03em;color:var(--ink);margin-bottom:32px;
   }
   .cover-logos{
-    display:flex;align-items:center;gap:20px;margin-bottom:24px;
-    font-size:22px;font-weight:700;
+    display:flex;align-items:center;gap:24px;margin-bottom:24px;
+    flex-wrap:wrap;
   }
-  .cover-logos .old{color:var(--ink-4);text-decoration:line-through;text-decoration-thickness:2px}
-  .cover-logos .arr{color:var(--teal);font-size:26px}
-  .cover-logos .new{
-    color:var(--ink);display:flex;align-items:center;gap:10px;
-  }
-  .cover-logos .new-mark{
-    width:36px;height:36px;background:var(--ink);border-radius:8px;
-    display:flex;align-items:center;justify-content:center;
-    color:var(--teal);font-weight:800;font-size:22px;
-  }
+  .cover-logos .old{display:flex;align-items:center;opacity:.55;filter:grayscale(.2)}
+  .cover-logos .old svg{height:38px;width:auto}
+  .cover-logos .arr{color:var(--teal);font-size:30px;font-weight:700}
+  .cover-logos .new{display:flex;align-items:center}
+  .cover-logos .new svg{height:48px;width:auto}
   .cover-meta{
     color:var(--ink-3);font-size:16px;font-style:italic;
   }
@@ -355,12 +349,53 @@
     .nav button{white-space:nowrap;flex:none}
   }
 
+  /* ============ TASK CHECKBOX ============ */
+  .dd-item{grid-template-columns:auto auto 1fr auto}
+  .task-check{
+    appearance:none;-webkit-appearance:none;
+    width:20px;height:20px;flex:none;
+    border:2px solid var(--ink-4);border-radius:5px;
+    background:#fff;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;
+    margin-top:2px;transition:background .12s,border-color .12s;
+  }
+  .task-check:hover{border-color:var(--teal)}
+  .task-check:checked{background:var(--teal);border-color:var(--teal)}
+  .task-check:checked::after{
+    content:'';width:11px;height:6px;
+    border-left:2px solid #fff;border-bottom:2px solid #fff;
+    transform:rotate(-45deg) translate(1px,-2px);
+  }
+  .dd-item.done{opacity:.58}
+  .dd-item.done .dd-item-body{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:var(--ink-3)}
+  .dd-item.done .dd-item-marker{background:#E5EEEC;color:var(--ink-4)}
+
+  @media (max-width:900px){
+    .dd-item{grid-template-columns:auto auto 1fr}
+  }
+
+  /* ============ SAVE PROGRESS BUTTON ============ */
+  .save-progress{
+    position:fixed;bottom:22px;right:22px;z-index:200;
+    background:var(--teal);color:#fff;border:none;
+    padding:12px 18px;border-radius:26px;font-family:inherit;
+    font-size:13px;font-weight:600;cursor:pointer;
+    box-shadow:0 6px 18px rgba(15,31,46,.18);
+    display:flex;align-items:center;gap:10px;
+  }
+  .save-progress:hover{background:var(--teal-2)}
+  .save-progress .count{
+    background:rgba(255,255,255,.22);padding:2px 9px;border-radius:11px;
+    font-size:12px;font-weight:700;
+  }
+
   /* Print */
   @media print{
-    .topbar,.nav-footer{display:none}
+    .topbar,.nav-footer,.save-progress{display:none}
     .view{display:block!important}
     main{padding:0}
     .slide,.drilldown{box-shadow:none;page-break-inside:avoid}
+    .task-check{border-color:#999}
   }
 </style>
 </head>
@@ -370,7 +405,14 @@
 <header class="topbar">
   <div class="topbar-inner">
     <a href="#" class="logo" onclick="goTo('cover');return false" aria-label="Fluenix — home">
-      <span class="logo-mark" aria-hidden="true">F</span>
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="200" height="200" rx="46" ry="46" fill="#3a3937"/>
+          <rect x="34" y="44" width="118" height="28" rx="14" ry="14" fill="#ffffff"/>
+          <path d="M 62 72 C 46 118, 40 148, 60 170 C 88 190, 128 178, 148 156"
+                stroke="#12A395" stroke-width="24" stroke-linecap="round" fill="none"/>
+        </svg>
+      </span>
       <span>Fluenix</span>
     </a>
 
@@ -414,9 +456,45 @@
     <div class="cover">
       <div class="cover-main">
         <div class="cover-logos">
-          <span class="old">FuelOmat</span>
+          <span class="old" aria-label="FuelOmat (former brand)">
+            <!-- Fuelomat wordmark: fuel + gauge O + mat -->
+            <svg viewBox="0 0 520 110" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#231f20" font-family="Figtree, Arial, sans-serif" font-weight="800" font-size="88" letter-spacing="-2">
+                <text x="0" y="86">fuel</text>
+                <text x="330" y="86">mat</text>
+              </g>
+              <!-- gauge O -->
+              <g transform="translate(268 55)">
+                <circle r="42" fill="#ffffff" stroke="#231f20" stroke-width="8"/>
+                <g stroke="#231f20" stroke-width="3" stroke-linecap="round">
+                  <line x1="0" y1="-36" x2="0" y2="-28"/>
+                  <line x1="25.5" y1="-25.5" x2="19.8" y2="-19.8"/>
+                  <line x1="36" y1="0" x2="28" y2="0"/>
+                  <line x1="-25.5" y1="-25.5" x2="-19.8" y2="-19.8"/>
+                  <line x1="-36" y1="0" x2="-28" y2="0"/>
+                </g>
+                <line x1="0" y1="0" x2="20" y2="-16" stroke="#231f20" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="22" cy="-18" r="7" fill="#e11d2b"/>
+                <circle cx="0" cy="0" r="4" fill="#231f20"/>
+              </g>
+            </svg>
+          </span>
           <span class="arr">→</span>
-          <span class="new"><span class="new-mark">F</span> Fluenix</span>
+          <span class="new" aria-label="Fluenix (new brand)">
+            <!-- Fluenix logo: mark + wordmark -->
+            <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- mark -->
+              <g>
+                <rect x="0" y="0" width="200" height="200" rx="46" ry="46" fill="#3a3937"/>
+                <rect x="34" y="44" width="118" height="28" rx="14" ry="14" fill="#ffffff"/>
+                <path d="M 62 72 C 46 118, 40 148, 60 170 C 88 190, 128 178, 148 156"
+                      stroke="#12A395" stroke-width="24" stroke-linecap="round" fill="none"/>
+              </g>
+              <!-- wordmark -->
+              <text x="228" y="158" fill="#3a3937"
+                    font-family="Figtree, Arial, sans-serif" font-weight="800" font-size="168" letter-spacing="-4">Fluenix</text>
+            </svg>
+          </span>
         </div>
         <h1 class="cover-title">
           <span class="en-only">Brand Transition &amp; Rebranding Strategy</span>
@@ -1137,6 +1215,92 @@
     const saved = localStorage.getItem('fluenix-lang');
     if (saved === 'cs' || saved === 'en') setLang(saved);
   } catch(e){}
+
+  // ---- Task checkboxes with git-friendly export ----
+  const PROGRESS_KEY = 'fluenix-progress-v1';
+  const items = Array.from(document.querySelectorAll('.dd-item'));
+
+  // Stable task id: viewId + index of item within that view
+  items.forEach(el => {
+    const view = el.closest('.view');
+    const vid  = view ? view.id : 'x';
+    const idx  = Array.from(view.querySelectorAll('.dd-item')).indexOf(el);
+    el.dataset.taskId = vid + '-' + idx;
+  });
+
+  let progress = {};
+  // Baseline from git (progress.json in repo)
+  const baseline = window.PROGRESS_BASELINE || {};
+  // Overlay: local changes
+  try {
+    const saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+    progress = Object.assign({}, baseline, saved);
+  } catch(e) { progress = Object.assign({}, baseline); }
+
+  function applyState(el){
+    const id = el.dataset.taskId;
+    const done = !!progress[id];
+    el.classList.toggle('done', done);
+    const cb = el.querySelector('.task-check');
+    if (cb) cb.checked = done;
+  }
+
+  items.forEach(el => {
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.className = 'task-check';
+    cb.setAttribute('aria-label', 'Mark task done');
+    cb.addEventListener('click', e => e.stopPropagation());
+    cb.addEventListener('change', () => {
+      progress[el.dataset.taskId] = cb.checked;
+      try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress)); } catch(e){}
+      el.classList.toggle('done', cb.checked);
+      updateCount();
+    });
+    el.insertBefore(cb, el.firstChild);
+    applyState(el);
+  });
+
+  // Hydrate from progress.json in the repo (shared state across everyone)
+  fetch('progress.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data) return;
+      let localSaved = {};
+      try { localSaved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}'); } catch(e){}
+      // Repo baseline + local overrides
+      progress = Object.assign({}, data, localSaved);
+      items.forEach(applyState);
+      updateCount();
+    })
+    .catch(() => {});
+
+  // Floating "Save progress" button — downloads progress.json to commit to git
+  const btn = document.createElement('button');
+  btn.className = 'save-progress';
+  btn.type = 'button';
+  btn.innerHTML = '<span class="lbl">💾 Save progress</span><span class="count">0/0</span>';
+  document.body.appendChild(btn);
+
+  function updateCount(){
+    const done = items.filter(el => progress[el.dataset.taskId]).length;
+    btn.querySelector('.count').textContent = done + '/' + items.length;
+  }
+  updateCount();
+
+  btn.addEventListener('click', () => {
+    // Only persist true values — cleaner file
+    const clean = {};
+    Object.keys(progress).forEach(k => { if (progress[k]) clean[k] = true; });
+    const blob = new Blob([JSON.stringify(clean, null, 2) + '\n'], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'progress.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    btn.querySelector('.lbl').textContent = '✓ Downloaded — commit to git';
+    setTimeout(() => { btn.querySelector('.lbl').textContent = '💾 Save progress'; }, 2400);
+  });
 
   // ---- Keyboard nav ----
   const order = ['cover','phase1','phase2','phase3','phase4'];
