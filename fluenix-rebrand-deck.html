@@ -376,6 +376,28 @@
   .dd-item.done .dd-item-body{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:var(--ink-3)}
   .dd-item.done .dd-item-marker{background:#E5EEEC;color:var(--ink-4)}
 
+  /* ============ TASK NOTES ============ */
+  .task-note{
+    grid-column:1 / -1;
+    width:100%;min-height:34px;
+    border:1px dashed var(--line);background:#FBFEFD;border-radius:6px;
+    padding:8px 12px;margin-top:8px;
+    font-family:inherit;font-size:13px;line-height:1.5;color:var(--ink-2);
+    resize:vertical;
+    transition:border-color .12s,background .12s,min-height .12s;
+  }
+  .task-note::placeholder{color:var(--ink-4);font-style:italic}
+  .task-note:hover{border-color:var(--teal-3);border-style:solid}
+  .task-note:focus{outline:none;border-color:var(--teal);border-style:solid;background:#fff;min-height:70px}
+  .task-note.has-content{border-color:var(--teal);border-style:solid;background:#F0FAF8}
+  .task-note-status{
+    grid-column:1 / -1;
+    font-size:11px;color:var(--teal-3);text-align:right;
+    margin-top:-4px;height:14px;font-style:italic;
+    opacity:0;transition:opacity .18s;
+  }
+  .task-note-status.show{opacity:1}
+
   @media (max-width:900px){
     .dd-item{grid-template-columns:auto auto 1fr}
   }
@@ -1393,6 +1415,44 @@
     applyState(el);
   });
 
+  // ---- Task notes ----
+  const NOTES_KEY = 'fluenix-notes-v1';
+  let notes = {};
+  try { notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e) { notes = {}; }
+
+  const notePlaceholder = document.documentElement.getAttribute('data-lang') === 'cs'
+    ? 'Přidat poznámku… (co ještě zbývá, kdo se stará, blokátory)'
+    : 'Add note… (what\'s still open, who\'s handling, blockers)';
+
+  items.forEach(el => {
+    const id = el.dataset.taskId;
+    const ta = document.createElement('textarea');
+    ta.className = 'task-note';
+    ta.placeholder = notePlaceholder;
+    ta.value = notes[id] || '';
+    if (ta.value.trim()) ta.classList.add('has-content');
+
+    const status = document.createElement('div');
+    status.className = 'task-note-status';
+
+    let saveTimer;
+    ta.addEventListener('input', () => {
+      notes[id] = ta.value;
+      ta.classList.toggle('has-content', ta.value.trim().length > 0);
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch(e){}
+        status.textContent = document.documentElement.getAttribute('data-lang') === 'cs' ? '✓ uloženo' : '✓ saved';
+        status.classList.add('show');
+        setTimeout(() => status.classList.remove('show'), 1400);
+      }, 400);
+    });
+    ta.addEventListener('click', e => e.stopPropagation());
+
+    el.appendChild(ta);
+    el.appendChild(status);
+  });
+
   // Hydrate from progress.json in the repo (shared state across everyone)
   fetch('progress.json', {cache:'no-store'})
     .then(r => r.ok ? r.json() : null)
@@ -1400,10 +1460,29 @@
       if (!data) return;
       let localSaved = {};
       try { localSaved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}'); } catch(e){}
-      // Repo baseline + local overrides
       progress = Object.assign({}, data, localSaved);
       items.forEach(applyState);
       updateCount();
+    })
+    .catch(() => {});
+
+  // Hydrate notes from notes.json in the repo
+  fetch('notes.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data) return;
+      let localSaved = {};
+      try { localSaved = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e){}
+      notes = Object.assign({}, data, localSaved);
+      // Re-apply to textareas
+      items.forEach(el => {
+        const id = el.dataset.taskId;
+        const ta = el.querySelector('.task-note');
+        if (ta && notes[id] && !ta.value.trim()) {
+          ta.value = notes[id];
+          ta.classList.add('has-content');
+        }
+      });
     })
     .catch(() => {});
 
@@ -1411,7 +1490,7 @@
   const btn = document.createElement('button');
   btn.className = 'save-progress';
   btn.type = 'button';
-  btn.innerHTML = '<span class="lbl">💾 Save progress</span><span class="count">0/0</span>';
+  btn.innerHTML = '<span class="lbl">💾 Save progress + notes</span><span class="count">0/0</span>';
   document.body.appendChild(btn);
 
   function updateCount(){
@@ -1420,18 +1499,29 @@
   }
   updateCount();
 
-  btn.addEventListener('click', () => {
-    // Only persist true values — cleaner file
-    const clean = {};
-    Object.keys(progress).forEach(k => { if (progress[k]) clean[k] = true; });
-    const blob = new Blob([JSON.stringify(clean, null, 2) + '\n'], {type:'application/json'});
+  function downloadJson(filename, data){
+    const blob = new Blob([JSON.stringify(data, null, 2) + '\n'], {type:'application/json'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'progress.json';
+    a.href = url; a.download = filename;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    btn.querySelector('.lbl').textContent = '✓ Downloaded — commit to git';
-    setTimeout(() => { btn.querySelector('.lbl').textContent = '💾 Save progress'; }, 2400);
+  }
+
+  btn.addEventListener('click', () => {
+    // progress.json — only true values
+    const cleanProgress = {};
+    Object.keys(progress).forEach(k => { if (progress[k]) cleanProgress[k] = true; });
+    downloadJson('progress.json', cleanProgress);
+
+    // notes.json — only non-empty
+    const cleanNotes = {};
+    Object.keys(notes).forEach(k => { if ((notes[k]||'').trim()) cleanNotes[k] = notes[k].trim(); });
+    // Small delay so the browser handles two downloads
+    setTimeout(() => downloadJson('notes.json', cleanNotes), 250);
+
+    btn.querySelector('.lbl').textContent = '✓ Downloaded — commit both to git';
+    setTimeout(() => { btn.querySelector('.lbl').textContent = '💾 Save progress + notes'; }, 2600);
   });
 
   // ---- Keyboard nav ----
