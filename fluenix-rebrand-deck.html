@@ -1478,11 +1478,29 @@
     el.appendChild(status);
   });
 
+  // ---- One-time migration: pre-Firebase localStorage → cloud ----
+  let migrated = false;
+  function migrateFromLocalStorageIfNeeded(){
+    if (migrated) return;
+    migrated = true;
+    try {
+      const oldProgress = JSON.parse(localStorage.getItem('fluenix-progress-v1') || '{}');
+      const oldNotes = JSON.parse(localStorage.getItem('fluenix-notes-v1') || '{}');
+      const remoteEmpty = Object.keys(progress).length === 0 && Object.keys(notes).length === 0;
+      if (remoteEmpty && (Object.keys(oldProgress).length || Object.keys(oldNotes).length)) {
+        Object.keys(oldProgress).forEach(k => { if (oldProgress[k]) progressRef.child(k).set(true); });
+        Object.keys(oldNotes).forEach(k => { if ((oldNotes[k]||'').trim()) notesRef.child(k).set(oldNotes[k]); });
+        console.log('Migrated pre-cloud data:', Object.keys(oldProgress).length, 'checks +', Object.keys(oldNotes).length, 'notes');
+      }
+    } catch(e) { console.warn('Migration skipped', e); }
+  }
+
   // ---- Realtime listeners: any change from anyone reflects instantly ----
   progressRef.on('value', snap => {
     progress = snap.val() || {};
     items.forEach(applyState);
     updateCount();
+    migrateFromLocalStorageIfNeeded();
   });
 
   notesRef.on('value', snap => {
