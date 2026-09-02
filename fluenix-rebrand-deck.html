@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
   :root{
     --teal:#12A395;
@@ -1370,8 +1372,21 @@
     }
   });
 
-  // ---- Task checkboxes with git-friendly export ----
-  const PROGRESS_KEY = 'fluenix-progress-v1';
+  // ---- Firebase Realtime Database (shared state across all viewers) ----
+  const firebaseConfig = {
+    apiKey: "AIzaSyClZnietgDL5ZHwphAA42dSrTn5FfjC5e4",
+    authDomain: "fluenix-deck.firebaseapp.com",
+    databaseURL: "https://fluenix-deck-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "fluenix-deck",
+    storageBucket: "fluenix-deck.firebasestorage.app",
+    messagingSenderId: "960123658461",
+    appId: "1:960123658461:web:a1008a2e56224c5d25bb34"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const fdb = firebase.database();
+  const progressRef = fdb.ref('progress');
+  const notesRef = fdb.ref('notes');
+
   const items = Array.from(document.querySelectorAll('.dd-item'));
 
   // Stable task id: viewId + index of item within that view
@@ -1383,13 +1398,7 @@
   });
 
   let progress = {};
-  // Baseline from git (progress.json in repo)
-  const baseline = window.PROGRESS_BASELINE || {};
-  // Overlay: local changes
-  try {
-    const saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
-    progress = Object.assign({}, baseline, saved);
-  } catch(e) { progress = Object.assign({}, baseline); }
+  let notes = {};
 
   function applyState(el){
     const id = el.dataset.taskId;
@@ -1399,6 +1408,19 @@
     if (cb) cb.checked = done;
   }
 
+  function applyNote(el){
+    const id = el.dataset.taskId;
+    const ta = el.querySelector('.task-note');
+    if (!ta) return;
+    const remote = notes[id] || '';
+    // Only overwrite if the field is not currently focused (avoid stealing keystrokes)
+    if (document.activeElement !== ta) {
+      ta.value = remote;
+      ta.classList.toggle('has-content', remote.trim().length > 0);
+    }
+  }
+
+  // ---- Task checkboxes ----
   items.forEach(el => {
     const cb = document.createElement('input');
     cb.type = 'checkbox';
@@ -1407,19 +1429,16 @@
     cb.addEventListener('click', e => e.stopPropagation());
     cb.addEventListener('change', () => {
       progress[el.dataset.taskId] = cb.checked;
-      try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress)); } catch(e){}
       el.classList.toggle('done', cb.checked);
       updateCount();
+      // Push to Firebase — instant broadcast to everyone
+      progressRef.child(el.dataset.taskId).set(cb.checked ? true : null)
+        .catch(err => console.warn('Firebase save failed', err));
     });
     el.insertBefore(cb, el.firstChild);
-    applyState(el);
   });
 
   // ---- Task notes ----
-  const NOTES_KEY = 'fluenix-notes-v1';
-  let notes = {};
-  try { notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e) { notes = {}; }
-
   const notePlaceholder = document.documentElement.getAttribute('data-lang') === 'cs'
     ? 'Přidat poznámku… (co ještě zbývá, kdo se stará, blokátory)'
     : 'Add note… (what\'s still open, who\'s handling, blockers)';
@@ -1429,23 +1448,29 @@
     const ta = document.createElement('textarea');
     ta.className = 'task-note';
     ta.placeholder = notePlaceholder;
-    ta.value = notes[id] || '';
-    if (ta.value.trim()) ta.classList.add('has-content');
 
     const status = document.createElement('div');
     status.className = 'task-note-status';
 
     let saveTimer;
     ta.addEventListener('input', () => {
-      notes[id] = ta.value;
-      ta.classList.toggle('has-content', ta.value.trim().length > 0);
+      const val = ta.value;
+      ta.classList.toggle('has-content', val.trim().length > 0);
+      notes[id] = val;
       clearTimeout(saveTimer);
       saveTimer = setTimeout(() => {
-        try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch(e){}
-        status.textContent = document.documentElement.getAttribute('data-lang') === 'cs' ? '✓ uloženo' : '✓ saved';
-        status.classList.add('show');
-        setTimeout(() => status.classList.remove('show'), 1400);
-      }, 400);
+        notesRef.child(id).set(val.trim() ? val : null)
+          .then(() => {
+            status.textContent = document.documentElement.getAttribute('data-lang') === 'cs' ? '✓ uloženo do cloudu' : '✓ saved to cloud';
+            status.classList.add('show');
+            setTimeout(() => status.classList.remove('show'), 1600);
+          })
+          .catch(err => {
+            status.textContent = document.documentElement.getAttribute('data-lang') === 'cs' ? '⚠ chyba' : '⚠ save error';
+            status.classList.add('show');
+            console.warn('Firebase save failed', err);
+          });
+      }, 500);
     });
     ta.addEventListener('click', e => e.stopPropagation());
 
@@ -1453,44 +1478,24 @@
     el.appendChild(status);
   });
 
-  // Hydrate from progress.json in the repo (shared state across everyone)
-  fetch('progress.json', {cache:'no-store'})
-    .then(r => r.ok ? r.json() : null)
-    .then(data => {
-      if (!data) return;
-      let localSaved = {};
-      try { localSaved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}'); } catch(e){}
-      progress = Object.assign({}, data, localSaved);
-      items.forEach(applyState);
-      updateCount();
-    })
-    .catch(() => {});
+  // ---- Realtime listeners: any change from anyone reflects instantly ----
+  progressRef.on('value', snap => {
+    progress = snap.val() || {};
+    items.forEach(applyState);
+    updateCount();
+  });
 
-  // Hydrate notes from notes.json in the repo
-  fetch('notes.json', {cache:'no-store'})
-    .then(r => r.ok ? r.json() : null)
-    .then(data => {
-      if (!data) return;
-      let localSaved = {};
-      try { localSaved = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e){}
-      notes = Object.assign({}, data, localSaved);
-      // Re-apply to textareas
-      items.forEach(el => {
-        const id = el.dataset.taskId;
-        const ta = el.querySelector('.task-note');
-        if (ta && notes[id] && !ta.value.trim()) {
-          ta.value = notes[id];
-          ta.classList.add('has-content');
-        }
-      });
-    })
-    .catch(() => {});
+  notesRef.on('value', snap => {
+    notes = snap.val() || {};
+    items.forEach(applyNote);
+  });
 
-  // Floating "Save progress" button — downloads progress.json to commit to git
+  // Floating status button — shows sync state + task count
   const btn = document.createElement('button');
   btn.className = 'save-progress';
   btn.type = 'button';
-  btn.innerHTML = '<span class="lbl">💾 Save progress + notes</span><span class="count">0/0</span>';
+  btn.innerHTML = '<span class="lbl">☁ Live sync</span><span class="count">0/0</span>';
+  btn.title = 'All changes save automatically to the cloud. Everyone with the link sees updates in real time.';
   document.body.appendChild(btn);
 
   function updateCount(){
@@ -1499,29 +1504,26 @@
   }
   updateCount();
 
-  function downloadJson(filename, data){
-    const blob = new Blob([JSON.stringify(data, null, 2) + '\n'], {type:'application/json'});
+  // Connection state indicator
+  fdb.ref('.info/connected').on('value', snap => {
+    const connected = snap.val() === true;
+    btn.style.background = connected ? '' : '#DC2626';
+    btn.querySelector('.lbl').textContent = connected ? '☁ Live sync' : '⚠ Offline';
+  });
+
+  // Click to download JSON snapshot (optional git backup)
+  btn.addEventListener('click', () => {
+    const snapshot = {
+      exported_at: new Date().toISOString(),
+      progress: Object.fromEntries(Object.entries(progress).filter(([_,v]) => v)),
+      notes: Object.fromEntries(Object.entries(notes).filter(([_,v]) => (v||'').trim()))
+    };
+    const blob = new Blob([JSON.stringify(snapshot, null, 2) + '\n'], {type:'application/json'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = filename;
+    a.href = url; a.download = 'deck-snapshot-' + new Date().toISOString().slice(0,10) + '.json';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-
-  btn.addEventListener('click', () => {
-    // progress.json — only true values
-    const cleanProgress = {};
-    Object.keys(progress).forEach(k => { if (progress[k]) cleanProgress[k] = true; });
-    downloadJson('progress.json', cleanProgress);
-
-    // notes.json — only non-empty
-    const cleanNotes = {};
-    Object.keys(notes).forEach(k => { if ((notes[k]||'').trim()) cleanNotes[k] = notes[k].trim(); });
-    // Small delay so the browser handles two downloads
-    setTimeout(() => downloadJson('notes.json', cleanNotes), 250);
-
-    btn.querySelector('.lbl').textContent = '✓ Downloaded — commit both to git';
-    setTimeout(() => { btn.querySelector('.lbl').textContent = '💾 Save progress + notes'; }, 2600);
   });
 
   // ---- Keyboard nav ----
