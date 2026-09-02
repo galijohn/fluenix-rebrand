@@ -1529,20 +1529,8 @@
     btn.querySelector('.lbl').textContent = connected ? '☁ Live sync' : '⚠ Offline';
   });
 
-  // Click to download JSON snapshot (optional git backup)
-  btn.addEventListener('click', () => {
-    const snapshot = {
-      exported_at: new Date().toISOString(),
-      progress: Object.fromEntries(Object.entries(progress).filter(([_,v]) => v)),
-      notes: Object.fromEntries(Object.entries(notes).filter(([_,v]) => (v||'').trim()))
-    };
-    const blob = new Blob([JSON.stringify(snapshot, null, 2) + '\n'], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'deck-snapshot-' + new Date().toISOString().slice(0,10) + '.json';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  });
+  // Button is now purely a status indicator — no click action.
+  btn.style.cursor = 'default';
 
   // ---- Keyboard nav ----
   const order = ['cover','phase1','phase2','phase3','phase4'];
