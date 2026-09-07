@@ -104,38 +104,36 @@
   .hero-photo-caption .role{font-size:12px;color:rgba(255,255,255,.78);margin-top:2px;letter-spacing:.03em;text-transform:uppercase}
 
   .brand-transition{
-    padding:36px 0 12px;background:var(--paper);
+    margin-top:32px;padding:20px 0 0;
   }
   .brand-transition .row{
-    display:flex;align-items:center;justify-content:center;gap:44px;flex-wrap:wrap;
+    display:flex;align-items:center;gap:28px;flex-wrap:wrap;
   }
   .brand-transition .old-logo{
-    height:56px;width:auto;display:block;opacity:.55;filter:grayscale(.15);
+    height:42px;width:auto;display:block;opacity:.55;filter:grayscale(.15);
   }
   .brand-transition .arrow{
-    font-size:44px;font-weight:700;color:var(--red);line-height:1;
+    font-size:34px;font-weight:700;color:var(--red);line-height:1;
   }
   .brand-transition a.new-link{
-    display:inline-block;text-decoration:none;
-    transition:transform .18s;
+    display:inline-block;text-decoration:none;transition:transform .18s;
   }
   .brand-transition a.new-link:hover{transform:translateY(-2px)}
   .brand-transition .new-logo{
-    height:72px;width:auto;display:block;
+    height:56px;width:auto;display:block;
   }
   .brand-transition .caption{
-    text-align:center;margin-top:14px;
-    font-size:13px;color:var(--ink-3);letter-spacing:.03em;
+    margin-top:12px;font-size:12.5px;color:var(--ink-3);letter-spacing:.03em;
   }
   .brand-transition .caption a{
     color:var(--red);font-weight:700;text-decoration:none;
   }
   .brand-transition .caption a:hover{text-decoration:underline}
   @media (max-width:640px){
-    .brand-transition .row{gap:24px}
-    .brand-transition .old-logo{height:42px}
-    .brand-transition .new-logo{height:52px}
-    .brand-transition .arrow{font-size:32px}
+    .brand-transition .row{gap:16px}
+    .brand-transition .old-logo{height:32px}
+    .brand-transition .new-logo{height:44px}
+    .brand-transition .arrow{font-size:26px}
   }
 
   article{
@@ -205,6 +203,16 @@
         <span class="kicker">Announcement · A message from our CEO</span>
         <h1>FuelOmat is becoming <span class="accent">Fluenix</span></h1>
         <p class="hero-lede">After 17 years of helping companies take control of what happens around their fuel and fleet operations, our name is evolving with us.</p>
+        <div class="brand-transition">
+          <div class="row">
+            <img src="fuelomat-logo.png" alt="FuelOmat" class="old-logo">
+            <span class="arrow">→</span>
+            <a href="https://fluenix.eu" class="new-link" title="Continue to Fluenix">
+              <img src="fluenix-logo.png" alt="Fluenix — continue to new site" class="new-logo">
+            </a>
+          </div>
+          <div class="caption">Click the <a href="https://fluenix.eu">Fluenix logo</a> to continue to the new site.</div>
+        </div>
       </div>
       <div class="hero-photo">
         <img src="kligl-ceo.png" alt="Jan Kligl, CEO">
@@ -214,19 +222,6 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="brand-transition">
-  <div class="wrap">
-    <div class="row">
-      <img src="fuelomat-logo.png" alt="FuelOmat" class="old-logo">
-      <span class="arrow">→</span>
-      <a href="https://fluenix.eu" class="new-link" title="Continue to Fluenix">
-        <img src="fluenix-logo.png" alt="Fluenix — continue to new site" class="new-logo">
-      </a>
-    </div>
-    <div class="caption">Click the <a href="https://fluenix.eu">Fluenix logo</a> to continue to the new site.</div>
   </div>
 </section>
 
