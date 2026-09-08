@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free canvas — drag anything anywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#E50F0D; --teal:#00A896;
+    --ink:#242021; --ink-2:#4A4547; --ink-3:#7A7577; --ink-4:#B5B0B2;
+    --line:#E5E1E2; --paper:#FFFFFF; --paper-2:#F7F5F5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Heebo',system-ui,sans-serif;color:var(--ink);
+    background:#3a3a3a;line-height:1.6;
+    padding:24px 24px 80px;
+  }
+
+  /* ===== TOOLBAR ===== */
+  .toolbar{
+    position:fixed;top:0;left:0;right:0;z-index:9999;
+    background:#1a1a1a;color:#fff;
+    padding:10px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    box-shadow:0 2px 16px rgba(0,0,0,.4);font-size:13px;
+  }
+  .toolbar .title{font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:11px;color:#9a9a9a;margin-right:8px}
+  .toolbar button{
+    background:#333;color:#fff;border:none;padding:8px 14px;border-radius:7px;
+    cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;
+  }
+  .toolbar button:hover{background:#444}
+  .toolbar button.primary{background:var(--teal)}
+  .toolbar button.primary:hover{background:#00c4ae}
+  .toolbar button.on{background:var(--teal)}
+  .toolbar .sep{width:1px;height:22px;background:#3d3d3d}
+  .toolbar .info{color:#8a8a8a;font-size:11.5px;margin-left:auto}
+
+  /* ===== CANVAS ===== */
+  .canvas{
+    position:relative;
+    width:1200px;min-height:2600px;
+    margin:64px auto 0;
+    background:var(--paper);
+    box-shadow:0 8px 50px rgba(0,0,0,.4);
+  }
+  .canvas.grid{
+    background-image:
+      linear-gradient(rgba(0,168,150,.09) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,168,150,.09) 1px,transparent 1px);
+    background-size:20px 20px;
+  }
+  .fold{
+    position:absolute;left:0;right:0;top:800px;
+    border-top:2px dashed rgba(229,15,13,.45);pointer-events:none;z-index:5;
+  }
+  .fold::after{
+    content:'fold — 800px';position:absolute;right:6px;top:4px;
+    font-size:10px;font-weight:700;color:var(--red);letter-spacing:.08em;
+  }
+
+  /* ===== DRAGGABLE ELEMENTS ===== */
+  .el{
+    position:absolute;
+    cursor:grab;
+    outline:1px dashed transparent;
+    outline-offset:4px;
+    transition:outline-color .1s;
+  }
+  .el:hover{outline-color:rgba(0,168,150,.5)}
+  .el.sel{outline:2px solid var(--teal);outline-offset:4px}
+  .el.drag{cursor:grabbing;opacity:.85;z-index:500 !important}
+  .el .tag{
+    position:absolute;top:-20px;left:0;
+    background:var(--teal);color:#fff;
+    font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 7px;border-radius:4px;white-space:nowrap;
+    opacity:0;transition:opacity .1s;pointer-events:none;
+  }
+  .el:hover .tag,.el.sel .tag{opacity:1}
+  .el .rz{
+    position:absolute;right:-6px;bottom:-6px;
+    width:14px;height:14px;background:var(--teal);
+    border:2px solid #fff;border-radius:3px;
+    cursor:nwse-resize;opacity:0;transition:opacity .1s;
+  }
+  .el:hover .rz,.el.sel .rz{opacity:1}
+  .el.locked{outline-color:transparent !important;cursor:default}
+  .el.locked .rz,.el.locked .tag{display:none}
+
+  /* ===== CONTENT STYLES ===== */
+  .logo-fo img{width:100%;display:block}
+  .logo-fx img{width:100%;display:block}
+  .navbar{display:flex;gap:26px;font-size:15px;font-weight:600;color:var(--ink)}
+  .btn-red{background:var(--red);color:#fff;padding:9px 20px;border-radius:24px;font-size:14px;font-weight:700;text-align:center}
+  .btn-dark{background:var(--ink);color:#fff;padding:9px 20px;border-radius:24px;font-size:14px;font-weight:700;text-align:center}
+  .flag{height:100%;background:linear-gradient(180deg,#fff 50%,#D7141A 50%);border:1px solid var(--line);border-radius:2px}
+  .hline{background:var(--line);height:1px;width:100%}
+
+  .kicker{
+    display:inline-block;background:#FDEBEB;color:var(--red);
+    padding:6px 14px;border-radius:2px;font-size:11px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;
+  }
+  .h1{font-size:50px;font-weight:800;line-height:1.12;letter-spacing:-.01em}
+  .h1 .old{color:var(--red)} .h1 .new{color:var(--teal)}
+  .lede{font-size:18px;color:var(--ink-2);line-height:1.6}
+  .body-txt{font-size:17px;color:var(--ink-2);line-height:1.72}
+  .body-txt strong{color:var(--ink);font-weight:700}
+  .hl{font-size:20px;font-weight:700;color:var(--ink)}
+
+  .ceo{border-radius:6px;overflow:hidden;background:#F0EDED;box-shadow:0 12px 40px rgba(36,32,33,.16);position:relative}
+  .ceo img{width:100%;display:block}
+  .ceo-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(36,32,33,.92),transparent);color:#fff;padding:24px 18px 12px}
+  .ceo-cap .n{font-size:16px;font-weight:700;line-height:1.2}
+  .ceo-cap .r{font-size:10.5px;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.04em}
+
+  .vid{border-radius:12px;overflow:hidden;background:#0b0d0f;box-shadow:0 18px 50px rgba(36,32,33,.22);line-height:0}
+  .vid video{width:100%;display:block}
+
+  .arr{font-size:38px;font-weight:700;color:var(--red);text-align:center;line-height:1}
+
+  .eyebrow{
+    display:flex;align-items:center;gap:14px;justify-content:center;
+    font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);
+  }
+  .eyebrow::before,.eyebrow::after{content:'';flex:1;height:1px;background:var(--ink-4)}
+  .h2{font-size:34px;font-weight:800;line-height:1.2;text-align:center;letter-spacing:-.01em}
+
+  .num{font-size:12px;font-weight:800;letter-spacing:.2em;color:var(--red)}
+  .h3{font-size:24px;font-weight:800;line-height:1.25}
+  .sub{font-size:14px;font-weight:700;color:var(--red)}
+  .bullets{list-style:none}
+  .bullets li{font-size:14.5px;color:var(--ink-2);padding:5px 0 5px 20px;position:relative}
+  .bullets li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;background:var(--red);border-radius:50%}
+
+  .ph{
+    width:100%;height:100%;
+    background:repeating-linear-gradient(45deg,#e8e5e5,#e8e5e5 12px,#dedbdb 12px,#dedbdb 24px);
+    border-radius:12px;display:flex;align-items:center;justify-content:center;
+    color:var(--ink-3);font-size:14px;font-weight:700;text-align:center;padding:16px;line-height:1.45;
+  }
+
+  .band{width:100%;height:100%;background:var(--paper-2)}
+  .band-dark{width:100%;height:100%;background:var(--ink)}
+  .foot-txt{font-size:13px;color:rgba(255,255,255,.75)}
+
+  .tag-line{font-size:25px;font-weight:800;line-height:1.35}
+  .tag-line .new{color:var(--teal)}
+  .sig-n{font-size:17px;font-weight:800}
+  .sig-r{font-size:14px;color:var(--ink-3)}
+
+  /* ===== EXPORT PANEL ===== */
+  .out{
+    position:fixed;right:16px;bottom:16px;z-index:9998;
+    background:#0d0d0d;color:#7ee3d3;
+    font-family:ui-monospace,Menlo,monospace;font-size:10.5px;line-height:1.55;
+    padding:12px 14px;border-radius:10px;width:300px;max-height:340px;overflow:auto;
+    white-space:pre-wrap;box-shadow:0 10px 40px rgba(0,0,0,.5);display:none;
+  }
+  .out.show{display:block}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="title">Free canvas</span>
+  <button id="gridBtn" class="on">Grid</button>
+  <button id="snapBtn" class="on">Snap 10px</button>
+  <button id="foldBtn" class="on">Fold line</button>
+  <span class="sep"></span>
+  <button id="front">Bring to front</button>
+  <button id="back">Send to back</button>
+  <button id="del">Hide selected</button>
+  <span class="sep"></span>
+  <button id="save" class="primary">Save</button>
+  <button id="reset">Reset</button>
+  <button id="exp">Export for Claude</button>
+  <span class="info">Drag anything · corner handle = resize · click to select · arrow keys nudge</span>
+</div>
+
+<div class="canvas grid" id="canvas">
+  <div class="fold" id="fold"></div>
+</div>
+
+<div class="out" id="out"></div>
+
+<script>
+const KEY = 'fluenix-canvas-v1';
+const canvas = document.getElementById('canvas');
+const out = document.getElementById('out');
+
+/* ---------- element definitions: id, label, x, y, w, h(optional), html ---------- */
+const DEFS = [
+  // header
+  {id:'logo-fo',   label:'FuelOmat logo', x:60,  y:24,  w:170, html:`<div class="logo-fo"><img src="fuelomat-logo.png" alt=""></div>`},
+  {id:'nav',       label:'Nav',           x:330, y:36,  w:330, html:`<div class="navbar"><span>Home</span><span>Products</span><span>References</span><span>Contact</span></div>`},
+  {id:'flag',      label:'Flag',          x:790, y:38,  w:24, h:17, html:`<div class="flag"></div>`},
+  {id:'btn-red',   label:'Contact Us',    x:850, y:28,  w:130, html:`<div class="btn-red">Contact Us</div>`},
+  {id:'btn-dark',  label:'Sign in',       x:1000,y:28,  w:110, html:`<div class="btn-dark">Sign in</div>`},
+  {id:'rule-1',    label:'Header rule',   x:0,   y:86,  w:1200,h:1, html:`<div class="hline"></div>`},
+
+  // hero
+  {id:'kicker',    label:'Kicker',        x:60,  y:140, w:340, html:`<span class="kicker">Announcement · A message from our CEO</span>`},
+  {id:'h1',        label:'Headline',      x:60,  y:190, w:600, html:`<div class="h1"><span class="old">FuelOmat</span> is becoming <span class="new">Fluenix</span></div>`},
+  {id:'lede',      label:'Lede',          x:60,  y:330, w:560, html:`<div class="lede">After 17 years of helping companies take control of what happens around their fuel and fleet operations, our name is evolving with us.</div>`},
+  {id:'ceo',       label:'CEO photo',     x:790, y:140, w:340, html:`<div class="ceo"><img src="kligl-ceo.png" alt=""><div class="ceo-cap"><div class="n">Jan Kligl</div><div class="r">Chairman of the Board · Novum Global</div></div></div>`},
+
+  // logo transition
+  {id:'tr-old',    label:'Old logo',      x:60,  y:440, w:150, html:`<div class="logo-fo" style="opacity:.55;filter:grayscale(.15)"><img src="fuelomat-logo.png" alt=""></div>`},
+  {id:'tr-arr',    label:'Arrow',         x:240, y:438, w:50,  html:`<div class="arr">→</div>`},
+  {id:'tr-new',    label:'New logo',      x:320, y:432, w:200, html:`<div class="logo-fx"><img src="fluenix-logo.png" alt=""></div>`},
+
+  // video
+  {id:'video',     label:'CUBE video',    x:330, y:540, w:540, html:`<div class="vid"><video src="new-screen.mp4" autoplay loop muted playsinline disablepictureinpicture></video></div>`},
+
+  // why
+  {id:'why-1',     label:'WHY para 1',    x:200, y:900, w:800, html:`<div class="hl">FuelOmat is becoming Fluenix.</div>`},
+  {id:'why-2',     label:'WHY para 2',    x:200, y:950, w:800, html:`<div class="body-txt">For more than 17 years, we have been helping companies take control of what happens around their fuel and fleet operations. What started with fuel management has grown into something much bigger — from fuel dispensing and vehicle identification to access control, electric charging and more.</div>`},
+  {id:'why-3',     label:'WHY para 3',    x:200, y:1060,w:800, html:`<div class="hl">Our name needed to evolve with us.</div>`},
+
+  // brings header
+  {id:'band-1',    label:'Grey band',     x:0,   y:1140,w:1200,h:900, html:`<div class="band"></div>`},
+  {id:'eyebrow',   label:'Eyebrow',       x:350, y:1190,w:500, html:`<div class="eyebrow">What the new name brings</div>`},
+  {id:'h2',        label:'Section title', x:250, y:1225,w:700, html:`<div class="h2">The new name comes with new technology</div>`},
+
+  // item 1 — CUBE
+  {id:'i1-num',    label:'01 num',        x:60,  y:1320,w:60,  html:`<div class="num">01</div>`},
+  {id:'i1-h',      label:'01 title',      x:60,  y:1345,w:420, html:`<div class="h3">The new operator display</div>`},
+  {id:'i1-sub',    label:'01 sub',        x:60,  y:1385,w:300, html:`<div class="sub">Fuelomatic CUBE 5″</div>`},
+  {id:'i1-ul',     label:'01 bullets',    x:60,  y:1420,w:420, html:`<ul class="bullets"><li>Live volume, price and fuel type at a glance</li><li>RFID authentication for driver and vehicle</li><li>Per-fleet volume limits enforced at the pump</li><li>Unattended 24/7 operation</li></ul>`},
+  {id:'i1-vis',    label:'01 visual',     x:560, y:1320,w:580, html:`<div class="vid"><video src="new-screen.mp4" autoplay loop muted playsinline disablepictureinpicture></video></div>`},
+
+  // item 2 — MY FLUENIX
+  {id:'i2-vis',    label:'02 visual',     x:60,  y:1620,w:460, h:290, html:`<div class="ph">MY FLUENIX<br>app screenshot</div>`},
+  {id:'i2-num',    label:'02 num',        x:600, y:1650,w:60,  html:`<div class="num">02</div>`},
+  {id:'i2-h',      label:'02 title',      x:600, y:1675,w:420, html:`<div class="h3">MY FLUENIX</div>`},
+  {id:'i2-sub',    label:'02 sub',        x:600, y:1715,w:300, html:`<div class="sub">Mobile app</div>`},
+  {id:'i2-p',      label:'02 text',       x:600, y:1750,w:480, html:`<div class="body-txt">[ Text to be provided ]</div>`},
+
+  // item 3 — camera
+  {id:'i3-num',    label:'03 num',        x:60,  y:1990,w:60,  html:`<div class="num">03</div>`},
+  {id:'i3-h',      label:'03 title',      x:60,  y:2015,w:420, html:`<div class="h3">Live camera</div>`},
+  {id:'i3-sub',    label:'03 sub',        x:60,  y:2055,w:300, html:`<div class="sub">Online monitoring</div>`},
+  {id:'i3-p',      label:'03 text',       x:60,  y:2090,w:440, html:`<div class="body-txt">[ Text to be provided ]</div>`},
+  {id:'i3-vis',    label:'03 visual',     x:560, y:1975,w:580, h:330, html:`<div class="ph">Live camera<br>example</div>`},
+
+  // closing
+  {id:'cl-1',      label:'Closing 1',     x:200, y:2130,w:800, html:`<div class="body-txt">FuelOmat described where we started. <strong>Fluenix</strong> describes where we are going.</div>`},
+  {id:'cl-tag',    label:'Tagline',       x:200, y:2190,w:800, html:`<div class="tag-line"><span class="new">Fluenix</span> — Technology for Automation, Without Disruption.</div>`},
+  {id:'cl-2',      label:'Closing 2',     x:200, y:2280,w:800, html:`<div class="body-txt">This is not just a new name. It is the next chapter of our journey.</div>`},
+  {id:'sig-n',     label:'Signature',     x:200, y:2340,w:400, html:`<div class="sig-n">Jan Kligl</div>`},
+  {id:'sig-r',     label:'Sig role',      x:200, y:2368,w:500, html:`<div class="sig-r">Chairman of the Board · Novum Global a.s.</div>`},
+
+  // footer
+  {id:'band-2',    label:'Footer band',   x:0,   y:2450,w:1200,h:110, html:`<div class="band-dark"></div>`},
+  {id:'foot-l',    label:'Footer left',   x:60,  y:2495,w:500, html:`<div class="foot-txt">© 2026 Novum Global a.s. · Fuelomat.cz becomes Fluenix</div>`},
+  {id:'foot-r',    label:'Footer right',  x:900, y:2495,w:250, html:`<div class="foot-txt" style="text-align:right">fluenix.eu · info@fluenix.eu</div>`}
+];
+
+/* ---------- build ---------- */
+let z = 10;
+DEFS.forEach(d => {
+  const el = document.createElement('div');
+  el.className = 'el';
+  el.dataset.id = d.id;
+  el.dataset.label = d.label;
+  el.style.left = d.x + 'px';
+  el.style.top = d.y + 'px';
+  el.style.width = d.w + 'px';
+  if(d.h) el.style.height = d.h + 'px';
+  el.style.zIndex = (d.id.startsWith('band') ? 1 : ++z);
+  el.innerHTML = `<span class="tag">${d.label}</span>${d.html}<span class="rz"></span>`;
+  canvas.appendChild(el);
+});
+
+/* ---------- state ---------- */
+let snap = true, sel = null;
+const snapV = v => snap ? Math.round(v/10)*10 : Math.round(v);
+
+function els(){ return Array.from(canvas.querySelectorAll('.el')); }
+
+function select(el){
+  els().forEach(e => e.classList.remove('sel'));
+  sel = el;
+  if(el) el.classList.add('sel');
+}
+
+/* ---------- drag & resize ---------- */
+let mode = null, start = null;
+
+canvas.addEventListener('pointerdown', e => {
+  const el = e.target.closest('.el');
+  if(!el || el.classList.contains('locked')) { select(null); return; }
+  select(el);
+  const r = el.getBoundingClientRect();
+  const isRz = e.target.classList.contains('rz');
+  mode = isRz ? 'resize' : 'move';
+  start = {
+    mx: e.clientX, my: e.clientY,
+    x: parseFloat(el.style.left), y: parseFloat(el.style.top),
+    w: r.width, h: r.height, el
+  };
+  el.classList.add('drag');
+  el.setPointerCapture(e.pointerId);
+  e.preventDefault();
+});
+
+canvas.addEventListener('pointermove', e => {
+  if(!mode || !start) return;
+  const dx = e.clientX - start.mx, dy = e.clientY - start.my;
+  if(mode === 'move'){
+    start.el.style.left = snapV(start.x + dx) + 'px';
+    start.el.style.top  = snapV(start.y + dy) + 'px';
+  } else {
+    start.el.style.width  = Math.max(30, snapV(start.w + dx)) + 'px';
+    start.el.style.height = Math.max(20, snapV(start.h + dy)) + 'px';
+  }
+});
+
+canvas.addEventListener('pointerup', e => {
+  if(start) start.el.classList.remove('drag');
+  mode = null; start = null;
+  persist();
+});
+
+/* ---------- keyboard nudge ---------- */
+document.addEventListener('keydown', e => {
+  if(!sel) return;
+  const step = e.shiftKey ? 10 : 1;
+  const map = {ArrowLeft:['left',-step],ArrowRight:['left',step],ArrowUp:['top',-step],ArrowDown:['top',step]};
+  if(!map[e.key]) return;
+  e.preventDefault();
+  const [prop, d] = map[e.key];
+  sel.style[prop] = (parseFloat(sel.style[prop]) + d) + 'px';
+  persist();
+});
+
+/* ---------- toolbar ---------- */
+const gridBtn = document.getElementById('gridBtn');
+const snapBtn = document.getElementById('snapBtn');
+const foldBtn = document.getElementById('foldBtn');
+
+gridBtn.onclick = () => { canvas.classList.toggle('grid'); gridBtn.classList.toggle('on'); };
+snapBtn.onclick = () => { snap = !snap; snapBtn.classList.toggle('on', snap); };
+foldBtn.onclick = () => {
+  const f = document.getElementById('fold');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+  foldBtn.classList.toggle('on');
+};
+document.getElementById('front').onclick = () => { if(sel){ sel.style.zIndex = ++z; persist(); } };
+document.getElementById('back').onclick  = () => { if(sel){ sel.style.zIndex = 0; persist(); } };
+document.getElementById('del').onclick   = () => { if(sel){ sel.style.display='none'; sel.dataset.hidden='1'; select(null); persist(); } };
+
+document.getElementById('save').onclick = () => {
+  persist();
+  const b = document.getElementById('save');
+  b.textContent = '✓ Saved'; setTimeout(()=>b.textContent='Save',1400);
+};
+document.getElementById('reset').onclick = () => {
+  try{ localStorage.removeItem(KEY); }catch(err){}
+  location.reload();
+};
+document.getElementById('exp').onclick = () => {
+  const lines = els()
+    .filter(e => e.dataset.hidden !== '1')
+    .map(e => ({
+      id: e.dataset.id, label: e.dataset.label,
+      x: parseFloat(e.style.left), y: parseFloat(e.style.top),
+      w: Math.round(e.getBoundingClientRect().width),
+      h: Math.round(e.getBoundingClientRect().height)
+    }))
+    .sort((a,b) => a.y - b.y || a.x - b.x)
+    .map(o => `${o.label.padEnd(18)} x:${String(o.x).padStart(4)}  y:${String(o.y).padStart(4)}  w:${String(o.w).padStart(4)}  h:${String(o.h).padStart(4)}`);
+  const hidden = els().filter(e => e.dataset.hidden === '1').map(e => '– ' + e.dataset.label);
+  const txt = 'LAYOUT (sorted top to bottom)\n\n' + lines.join('\n') +
+              (hidden.length ? '\n\nHIDDEN:\n' + hidden.join('\n') : '');
+  out.textContent = txt;
+  out.classList.add('show');
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b = document.getElementById('exp');
+    b.textContent = '✓ Copied — paste to Claude';
+    setTimeout(()=>b.textContent='Export for Claude',2400);
+  });
+};
+
+/* ---------- persistence ---------- */
+function persist(){
+  const s = {};
+  els().forEach(e => {
+    s[e.dataset.id] = {
+      x: e.style.left, y: e.style.top,
+      w: e.style.width, h: e.style.height,
+      z: e.style.zIndex, hidden: e.dataset.hidden === '1'
+    };
+  });
+  try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(err){}
+}
+function restore(){
+  let s; try{ s = JSON.parse(localStorage.getItem(KEY)); }catch(err){}
+  if(!s) return;
+  els().forEach(e => {
+    const d = s[e.dataset.id];
+    if(!d) return;
+    if(d.x) e.style.left = d.x;
+    if(d.y) e.style.top = d.y;
+    if(d.w) e.style.width = d.w;
+    if(d.h) e.style.height = d.h;
+    if(d.z) e.style.zIndex = d.z;
+    if(d.hidden){ e.style.display='none'; e.dataset.hidden='1'; }
+  });
+}
+restore();
+</script>
+
+</body>
+</html>
