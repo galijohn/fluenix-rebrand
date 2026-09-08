@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layout Mockup — drag to arrange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#E50F0D;
+    --teal:#00A896;
+    --ink:#242021;
+    --ink-2:#4A4547;
+    --ink-3:#7A7577;
+    --ink-4:#B5B0B2;
+    --line:#E5E1E2;
+    --paper:#FFFFFF;
+    --paper-2:#F7F5F5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Heebo',system-ui,sans-serif;
+    background:#EDEBEB;color:var(--ink);line-height:1.65;
+    padding:0 0 120px;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* ============ CONTROL PANEL ============ */
+  .panel{
+    position:fixed;top:16px;right:16px;z-index:9999;
+    background:#1a1a1a;color:#fff;border-radius:12px;
+    padding:16px 18px;width:280px;
+    box-shadow:0 12px 40px rgba(0,0,0,.35);
+    font-size:13px;
+  }
+  .panel h4{
+    font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:#9a9a9a;margin-bottom:12px;
+  }
+  .panel .ctl{margin-bottom:16px}
+  .panel label{display:block;font-size:12px;color:#c9c9c9;margin-bottom:6px}
+  .panel label b{color:#fff;font-weight:700}
+  .panel input[type=range]{width:100%;accent-color:var(--teal)}
+  .panel .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .panel button{
+    flex:1;background:#333;color:#fff;border:none;
+    padding:9px 10px;border-radius:7px;cursor:pointer;
+    font-family:inherit;font-size:12px;font-weight:700;
+  }
+  .panel button:hover{background:#444}
+  .panel button.primary{background:var(--teal)}
+  .panel button.primary:hover{background:#00c4ae}
+  .panel .hint{
+    font-size:11px;color:#8a8a8a;line-height:1.45;margin-top:12px;
+    border-top:1px solid #333;padding-top:12px;
+  }
+  .panel .order-out{
+    background:#0d0d0d;border-radius:7px;padding:10px;
+    font-family:ui-monospace,Menlo,monospace;font-size:10.5px;
+    color:#7ee3d3;max-height:150px;overflow:auto;line-height:1.6;
+    white-space:pre-wrap;margin-top:10px;
+  }
+  @media (max-width:1500px){
+    .panel{position:static;width:auto;margin:16px auto;max-width:1120px}
+  }
+
+  /* ============ DRAGGABLE BLOCKS ============ */
+  .stage{background:var(--paper);max-width:1160px;margin:24px auto;box-shadow:0 4px 30px rgba(0,0,0,.10)}
+  .blk{
+    position:relative;
+    border:2px dashed transparent;
+    transition:border-color .12s, opacity .12s;
+  }
+  .blk.dragging{opacity:.35}
+  .blk.over{border-top:3px solid var(--teal)}
+  .blk:hover{border-color:rgba(0,168,150,.35)}
+  .blk-bar{
+    position:absolute;top:6px;left:6px;z-index:20;
+    display:flex;align-items:center;gap:8px;
+    background:rgba(26,26,26,.90);color:#fff;
+    padding:5px 10px;border-radius:6px;
+    font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    cursor:grab;opacity:0;transition:opacity .12s;
+    user-select:none;
+  }
+  .blk:hover .blk-bar{opacity:1}
+  .blk-bar:active{cursor:grabbing}
+  .blk-bar .grip{letter-spacing:0;font-size:13px;opacity:.7}
+  .blk-bar .up,.blk-bar .down{
+    background:#3a3a3a;border:none;color:#fff;cursor:pointer;
+    width:20px;height:20px;border-radius:4px;font-size:11px;line-height:1;
+  }
+  .blk-bar .up:hover,.blk-bar .down:hover{background:var(--teal)}
+  .blk-bar .hide{
+    background:#3a3a3a;border:none;color:#fff;cursor:pointer;
+    padding:0 7px;height:20px;border-radius:4px;font-size:10px;
+  }
+  .blk-bar .hide:hover{background:var(--red)}
+  .blk.hidden-blk{display:none}
+
+  /* ============ REAL PAGE STYLES ============ */
+  header.site{background:var(--paper);border-bottom:1px solid var(--line);padding:14px 0}
+  header.site .wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .brand img{height:40px;display:block}
+  .fnav{display:flex;gap:30px;flex:1;justify-content:center;font-size:15px;font-weight:600}
+  .flag{width:22px;height:16px;border-radius:2px;background:linear-gradient(180deg,#fff 50%,#D7141A 50%);border:1px solid var(--line)}
+  .btn-red{background:var(--red);color:#fff;padding:9px 20px;border-radius:24px;font-size:14px;font-weight:700}
+  .btn-dark{background:var(--ink);color:#fff;padding:9px 20px;border-radius:24px;font-size:14px;font-weight:700}
+
+  .hero{padding:72px 0 56px;background:linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 100%)}
+  .hero-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:52px;align-items:center}
+  .kicker{display:inline-block;background:#FDEBEB;color:var(--red);padding:6px 14px;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-size:clamp(32px,4.4vw,50px);font-weight:800;line-height:1.15;margin-bottom:16px}
+  h1 .old{color:var(--red)}
+  h1 .new{color:var(--teal)}
+  .lede{font-size:18px;color:var(--ink-2);line-height:1.6;max-width:620px}
+  .ceo{background:#F0EDED;border-radius:6px;overflow:hidden;box-shadow:0 12px 40px rgba(36,32,33,.14);position:relative}
+  .ceo img{width:100%;display:block}
+  .ceo-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(36,32,33,.92),transparent);color:#fff;padding:26px 20px 14px}
+  .ceo-cap .n{font-size:17px;font-weight:700}
+  .ceo-cap .r{font-size:11px;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.04em}
+
+  .why{padding:56px 0;background:var(--paper)}
+  .why .wrap{max-width:820px}
+  .why p{font-size:18px;color:var(--ink-2);line-height:1.75;margin-bottom:20px}
+  .why .hl{font-weight:700;color:var(--ink);font-size:20px}
+
+  .transition{padding:36px 0;background:var(--paper)}
+  .transition .row{display:flex;align-items:center;gap:32px;justify-content:center}
+  .transition .old-l{height:44px;opacity:.55;filter:grayscale(.15)}
+  .transition .arr{font-size:36px;font-weight:700;color:var(--red)}
+  .transition .new-l{height:58px}
+  .transition .cap{text-align:center;margin-top:12px;font-size:12.5px;color:var(--ink-3)}
+
+  .videosec{padding:52px 0;background:var(--paper-2);text-align:center}
+  .videosec .frame{
+    margin:0 auto;border-radius:12px;overflow:hidden;background:#0b0d0f;
+    box-shadow:0 18px 50px rgba(36,32,33,.20);line-height:0;
+    width:60%;
+  }
+  .videosec video{width:100%;display:block}
+  .videosec .cap{margin-top:14px;font-size:13px;color:var(--ink-3);letter-spacing:.04em}
+
+  .bringshead{padding:56px 0 8px;background:var(--paper-2);text-align:center}
+  .bringshead .eyebrow{display:inline-flex;align-items:center;gap:14px;font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3)}
+  .bringshead .eyebrow::before,.bringshead .eyebrow::after{content:'';width:48px;height:1px;background:var(--ink-4)}
+  .bringshead h2{font-size:clamp(26px,3.2vw,36px);font-weight:800;margin-top:12px}
+
+  .bringrow{padding:40px 0;background:var(--paper-2)}
+  .bringrow .grid{display:grid;grid-template-columns:1fr 1.25fr;gap:48px;align-items:center}
+  .bringrow.flip .copy{order:2}
+  .bringrow.flip .vis{order:1}
+  .bringrow .num{font-size:12px;font-weight:800;letter-spacing:.2em;color:var(--red);margin-bottom:10px}
+  .bringrow h3{font-size:24px;font-weight:800;margin-bottom:6px}
+  .bringrow .sub{font-size:14px;font-weight:700;color:var(--red);margin-bottom:14px}
+  .bringrow p{font-size:16px;color:var(--ink-2);line-height:1.7}
+  .bringrow ul{list-style:none;margin-top:14px}
+  .bringrow li{font-size:14.5px;color:var(--ink-2);padding:6px 0 6px 20px;position:relative}
+  .bringrow li::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;background:var(--red);border-radius:50%}
+  .bringrow .vis{border-radius:12px;overflow:hidden;background:#0b0d0f;box-shadow:0 16px 44px rgba(36,32,33,.18);line-height:0}
+  .bringrow .vis video,.bringrow .vis img{width:100%;display:block}
+  .placeholder{
+    background:repeating-linear-gradient(45deg,#e8e5e5,#e8e5e5 12px,#dedbdb 12px,#dedbdb 24px);
+    aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;
+    color:var(--ink-3);font-size:14px;font-weight:700;text-align:center;padding:20px;line-height:1.5;
+  }
+
+  .closing{padding:60px 0;background:var(--paper)}
+  .closing .wrap{max-width:820px}
+  .closing .tag{font-size:25px;font-weight:800;line-height:1.35;margin-bottom:18px}
+  .closing .tag .new{color:var(--teal)}
+  .closing p{font-size:18px;color:var(--ink-2);margin-bottom:16px}
+  .closing .sig{margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+  .closing .sig .n{font-size:17px;font-weight:800}
+  .closing .sig .r{font-size:14px;color:var(--ink-3)}
+
+  footer.site{background:var(--ink);color:rgba(255,255,255,.75);padding:36px 0;font-size:13px}
+  footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  footer.site a{color:#fff;text-decoration:none;margin-left:12px}
+
+  @media (max-width:860px){
+    .hero-grid,.bringrow .grid{grid-template-columns:1fr;gap:26px}
+    .videosec .frame{width:90% !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <h4>Layout controls</h4>
+
+  <div class="ctl">
+    <label>Video width — <b id="vwLabel">60%</b></label>
+    <input type="range" id="vw" min="20" max="100" value="60" step="5">
+  </div>
+
+  <div class="btns">
+    <button id="save" class="primary">Save layout</button>
+    <button id="reset">Reset</button>
+  </div>
+  <div class="btns" style="margin-top:8px">
+    <button id="copy">Copy layout for Claude</button>
+  </div>
+
+  <div class="order-out" id="orderOut"></div>
+
+  <div class="hint">
+    Hover a section → grab the dark label at its top-left and drag it up or down.<br>
+    ▲▼ move one step · ✕ hides a section.<br>
+    Layout auto-saves in your browser.
+  </div>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- HEADER -->
+  <div class="blk" data-id="header" draggable="false">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>HEADER<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <header class="site">
+      <div class="wrap">
+        <div class="brand"><img src="fuelomat-logo.png" alt="FuelOmat"></div>
+        <nav class="fnav"><span>Home</span><span>Products</span><span>References</span><span>Contact</span></nav>
+        <div class="flag"></div>
+        <span class="btn-red">Contact Us</span>
+        <span class="btn-dark">Sign in</span>
+      </div>
+    </header>
+  </div>
+
+  <!-- HERO -->
+  <div class="blk" data-id="hero">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>HERO — headline + CEO<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <span class="kicker">Announcement · A message from our CEO</span>
+            <h1><span class="old">FuelOmat</span> is becoming <span class="new">Fluenix</span></h1>
+            <p class="lede">After 17 years of helping companies take control of what happens around their fuel and fleet operations, our name is evolving with us.</p>
+          </div>
+          <div class="ceo">
+            <img src="kligl-ceo.png" alt="Jan Kligl">
+            <div class="ceo-cap"><div class="n">Jan Kligl</div><div class="r">Chairman of the Board · Novum Global</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- WHY -->
+  <div class="blk" data-id="why">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>WHY — the story<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="why">
+      <div class="wrap">
+        <p class="hl">FuelOmat is becoming Fluenix.</p>
+        <p>For more than 17 years, we have been helping companies take control of what happens around their fuel and fleet operations.</p>
+        <p>What started with fuel management has grown into something much bigger. Today, our technology connects and automates critical infrastructure across mines, construction sites, airports, farms and fleet operations.</p>
+        <p class="hl">Our name needed to evolve with us.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- LOGO TRANSITION -->
+  <div class="blk" data-id="transition">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>LOGO TRANSITION<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="transition">
+      <div class="wrap">
+        <div class="row">
+          <img src="fuelomat-logo.png" class="old-l" alt="FuelOmat">
+          <span class="arr">→</span>
+          <img src="fluenix-logo.png" class="new-l" alt="Fluenix">
+        </div>
+        <div class="cap">Click the Fluenix logo to continue to the new site.</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="blk" data-id="video">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>VIDEO — CUBE 5″<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="videosec">
+      <div class="wrap">
+        <div class="frame" id="vframe">
+          <video src="new-screen.mp4" autoplay loop muted playsinline disablepictureinpicture></video>
+        </div>
+        <div class="cap">The new Fuelomatic CUBE 5″ operator display</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- BRINGS HEADER -->
+  <div class="blk" data-id="bringshead">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>SECTION TITLE — what we bring<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="bringshead">
+      <div class="wrap">
+        <span class="eyebrow">What the new name brings</span>
+        <h2>The new name comes with new technology</h2>
+      </div>
+    </section>
+  </div>
+
+  <!-- BRING 01 — CUBE (with video) -->
+  <div class="blk" data-id="bring-cube">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>ITEM — CUBE display (text + video)<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="bringrow">
+      <div class="wrap">
+        <div class="grid">
+          <div class="copy">
+            <div class="num">01</div>
+            <h3>The new operator display</h3>
+            <div class="sub">Fuelomatic CUBE 5″</div>
+            <p>A completely redesigned interface for the people who actually stand at the pump.</p>
+            <ul>
+              <li>Live volume, price and fuel type at a glance</li>
+              <li>RFID authentication for driver and vehicle</li>
+              <li>Per-fleet volume limits enforced at the pump</li>
+              <li>Unattended 24/7 operation</li>
+            </ul>
+          </div>
+          <div class="vis"><video src="new-screen.mp4" autoplay loop muted playsinline disablepictureinpicture></video></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- BRING 02 — MY FLUENIX -->
+  <div class="blk" data-id="bring-app">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>ITEM — MY FLUENIX app<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="bringrow flip">
+      <div class="wrap">
+        <div class="grid">
+          <div class="copy">
+            <div class="num">02</div>
+            <h3>MY FLUENIX</h3>
+            <div class="sub">Mobile app</div>
+            <p>[ Text to be provided ]</p>
+          </div>
+          <div class="vis"><div class="placeholder">MY FLUENIX<br>app screenshot</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- BRING 03 — CAMERA -->
+  <div class="blk" data-id="bring-camera">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>ITEM — Live camera<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="bringrow">
+      <div class="wrap">
+        <div class="grid">
+          <div class="copy">
+            <div class="num">03</div>
+            <h3>Live camera</h3>
+            <div class="sub">Online monitoring</div>
+            <p>[ Text to be provided ]</p>
+          </div>
+          <div class="vis"><div class="placeholder">Live camera<br>example</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- BRING 04 — SECURITY -->
+  <div class="blk" data-id="bring-security">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>ITEM — Security<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="bringrow flip">
+      <div class="wrap">
+        <div class="grid">
+          <div class="copy">
+            <div class="num">04</div>
+            <h3>Stronger security</h3>
+            <div class="sub">Fraud protection</div>
+            <p>[ Text to be provided ]</p>
+          </div>
+          <div class="vis"><div class="placeholder">Security<br>visual</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="blk" data-id="closing">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>CLOSING — tagline + signature<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <section class="closing">
+      <div class="wrap">
+        <p>FuelOmat described where we started. <strong>Fluenix</strong> describes where we are going.</p>
+        <div class="tag"><span class="new">Fluenix</span> — Technology for Automation, Without Disruption.</div>
+        <p>This is not just a new name. It is the next chapter of our journey.</p>
+        <div class="sig">
+          <div class="n">Jan Kligl</div>
+          <div class="r">Chairman of the Board · Novum Global a.s.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="blk" data-id="footer">
+    <div class="blk-bar" draggable="true"><span class="grip">⠿</span>FOOTER<button class="up">▲</button><button class="down">▼</button><button class="hide">✕</button></div>
+    <footer class="site">
+      <div class="wrap">
+        <div>© 2026 Novum Global a.s. · Fuelomat.cz becomes Fluenix</div>
+        <div><a href="#">fluenix.eu</a><a href="#">info@fluenix.eu</a></div>
+      </div>
+    </footer>
+  </div>
+
+</div>
+
+<script>
+const KEY = 'fluenix-layout-mockup-v1';
+const stage = document.getElementById('stage');
+const orderOut = document.getElementById('orderOut');
+const vw = document.getElementById('vw');
+const vwLabel = document.getElementById('vwLabel');
+const vframe = document.getElementById('vframe');
+
+function blocks(){ return Array.from(stage.querySelectorAll('.blk')); }
+
+function currentState(){
+  return {
+    order: blocks().map(b => b.dataset.id),
+    hidden: blocks().filter(b => b.classList.contains('hidden-blk')).map(b => b.dataset.id),
+    videoWidth: vw.value + '%'
+  };
+}
+
+function renderOut(){
+  const s = currentState();
+  const visible = s.order.filter(id => !s.hidden.includes(id));
+  orderOut.textContent =
+    'ORDER:\n' + visible.map((id,i) => (i+1) + '. ' + id).join('\n') +
+    (s.hidden.length ? '\n\nHIDDEN:\n' + s.hidden.map(x=>'– '+x).join('\n') : '') +
+    '\n\nVIDEO WIDTH: ' + s.videoWidth;
+}
+
+function persist(){
+  try{ localStorage.setItem(KEY, JSON.stringify(currentState())); }catch(e){}
+  renderOut();
+}
+
+function applyState(s){
+  if(!s) return;
+  if(s.order){
+    s.order.forEach(id => {
+      const el = stage.querySelector('.blk[data-id="'+id+'"]');
+      if(el) stage.appendChild(el);
+    });
+  }
+  if(s.hidden){
+    blocks().forEach(b => b.classList.toggle('hidden-blk', s.hidden.includes(b.dataset.id)));
+  }
+  if(s.videoWidth){
+    vw.value = parseInt(s.videoWidth);
+    vwLabel.textContent = s.videoWidth;
+    vframe.style.width = s.videoWidth;
+  }
+}
+
+/* ---- drag & drop ---- */
+let dragged = null;
+stage.addEventListener('dragstart', e => {
+  const bar = e.target.closest('.blk-bar');
+  if(!bar) return;
+  dragged = bar.closest('.blk');
+  dragged.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  try{ e.dataTransfer.setData('text/plain', dragged.dataset.id); }catch(err){}
+});
+stage.addEventListener('dragend', () => {
+  if(dragged) dragged.classList.remove('dragging');
+  blocks().forEach(b => b.classList.remove('over'));
+  dragged = null;
+  persist();
+});
+stage.addEventListener('dragover', e => {
+  e.preventDefault();
+  if(!dragged) return;
+  const target = e.target.closest('.blk');
+  if(!target || target === dragged) return;
+  blocks().forEach(b => b.classList.remove('over'));
+  target.classList.add('over');
+  const r = target.getBoundingClientRect();
+  const before = (e.clientY - r.top) < r.height/2;
+  stage.insertBefore(dragged, before ? target : target.nextSibling);
+});
+stage.addEventListener('drop', e => e.preventDefault());
+
+/* ---- buttons ---- */
+stage.addEventListener('click', e => {
+  const blk = e.target.closest('.blk');
+  if(!blk) return;
+  if(e.target.classList.contains('up')){
+    const prev = blk.previousElementSibling;
+    if(prev) stage.insertBefore(blk, prev);
+    persist();
+  }
+  if(e.target.classList.contains('down')){
+    const next = blk.nextElementSibling;
+    if(next) stage.insertBefore(next, blk);
+    persist();
+  }
+  if(e.target.classList.contains('hide')){
+    blk.classList.add('hidden-blk');
+    persist();
+  }
+});
+
+/* ---- video width ---- */
+vw.addEventListener('input', () => {
+  vwLabel.textContent = vw.value + '%';
+  vframe.style.width = vw.value + '%';
+  persist();
+});
+
+/* ---- panel buttons ---- */
+document.getElementById('save').addEventListener('click', () => {
+  persist();
+  const b = document.getElementById('save');
+  b.textContent = '✓ Saved';
+  setTimeout(()=>b.textContent='Save layout', 1500);
+});
+document.getElementById('reset').addEventListener('click', () => {
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  location.reload();
+});
+document.getElementById('copy').addEventListener('click', () => {
+  const txt = orderOut.textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b = document.getElementById('copy');
+    b.textContent = '✓ Copied — paste to Claude';
+    setTimeout(()=>b.textContent='Copy layout for Claude', 2200);
+  });
+});
+
+/* ---- init ---- */
+try{ applyState(JSON.parse(localStorage.getItem(KEY))); }catch(e){}
+vframe.style.width = vw.value + '%';
+vwLabel.textContent = vw.value + '%';
+renderOut();
+</script>
+
+</body>
+</html>
