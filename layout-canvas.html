@@ -90,6 +90,10 @@
   .el:hover .rz,.el.sel .rz{opacity:1}
   .el.locked{outline-color:transparent !important;cursor:default}
   .el.locked .rz,.el.locked .tag{display:none}
+  .el.editing{outline:2px solid #f5a623 !important;cursor:text}
+  .el.editing .content{outline:none;background:rgba(245,166,35,.06)}
+  .el.editing .rz{display:none}
+  .el .content{width:100%;height:100%}
 
   /* ===== CONTENT STYLES ===== */
   .logo-fo img{width:100%;display:block}
@@ -172,14 +176,15 @@
   <button id="snapBtn" class="on">Snap 10px</button>
   <button id="foldBtn" class="on">Fold line</button>
   <span class="sep"></span>
-  <button id="front">Bring to front</button>
-  <button id="back">Send to back</button>
-  <button id="del">Hide selected</button>
+  <button id="front">Front</button>
+  <button id="back">Back</button>
+  <button id="dup">Duplicate</button>
+  <button id="del">Delete</button>
   <span class="sep"></span>
   <button id="save" class="primary">Save</button>
-  <button id="reset">Reset</button>
+  <button id="reset">Reset all</button>
   <button id="exp">Export for Claude</button>
-  <span class="info">Drag anything · corner handle = resize · click to select · arrow keys nudge</span>
+  <span class="info"><b>Double-click</b> = edit text · drag = move · corner = resize · <b>Del</b> = delete · arrows = nudge</span>
 </div>
 
 <div class="canvas grid" id="canvas">
@@ -273,7 +278,7 @@ DEFS.forEach(d => {
   el.style.width = d.w + 'px';
   if(d.h) el.style.height = d.h + 'px';
   el.style.zIndex = (d.id.startsWith('band') ? 1 : ++z);
-  el.innerHTML = `<span class="tag">${d.label}</span>${d.html}<span class="rz"></span>`;
+  el.innerHTML = `<span class="tag">${d.label}</span><div class="content">${d.html}</div><span class="rz"></span>`;
   canvas.appendChild(el);
 });
 
@@ -294,6 +299,9 @@ let mode = null, start = null;
 
 canvas.addEventListener('pointerdown', e => {
   const el = e.target.closest('.el');
+  // don't hijack pointer while typing inside an element being edited
+  if(el && el.classList.contains('editing')) return;
+  if(editing && editing !== el) stopEdit();
   if(!el || el.classList.contains('locked')) { select(null); return; }
   select(el);
   const r = el.getBoundingClientRect();
@@ -327,9 +335,61 @@ canvas.addEventListener('pointerup', e => {
   persist();
 });
 
-/* ---------- keyboard nudge ---------- */
+/* ---------- inline text editing ---------- */
+let editing = null;
+
+function startEdit(el){
+  if(!el) return;
+  editing = el;
+  el.classList.add('editing');
+  const c = el.querySelector('.content');
+  c.setAttribute('contenteditable','true');
+  c.focus();
+  const range = document.createRange();
+  range.selectNodeContents(c);
+  const s = window.getSelection();
+  s.removeAllRanges(); s.addRange(range);
+}
+function stopEdit(){
+  if(!editing) return;
+  const c = editing.querySelector('.content');
+  c.removeAttribute('contenteditable');
+  editing.classList.remove('editing');
+  editing = null;
+  persist();
+}
+
+canvas.addEventListener('dblclick', e => {
+  const el = e.target.closest('.el');
+  if(!el) return;
+  e.preventDefault();
+  select(el);
+  startEdit(el);
+});
+
+function deleteEl(el){
+  if(!el) return;
+  el.style.display = 'none';
+  el.dataset.hidden = '1';
+  if(sel === el) select(null);
+  persist();
+}
+
+/* ---------- keyboard ---------- */
 document.addEventListener('keydown', e => {
+  if(editing){
+    if(e.key === 'Escape'){ e.preventDefault(); stopEdit(); }
+    return;
+  }
   if(!sel) return;
+
+  if(e.key === 'Delete' || e.key === 'Backspace'){
+    e.preventDefault(); deleteEl(sel); return;
+  }
+  if(e.key === 'Enter'){
+    e.preventDefault(); startEdit(sel); return;
+  }
+
   const step = e.shiftKey ? 10 : 1;
   const map = {ArrowLeft:['left',-step],ArrowRight:['left',step],ArrowUp:['top',-step],ArrowDown:['top',step]};
   if(!map[e.key]) return;
@@ -353,7 +413,19 @@ foldBtn.onclick = () => {
 };
 document.getElementById('front').onclick = () => { if(sel){ sel.style.zIndex = ++z; persist(); } };
 document.getElementById('back').onclick  = () => { if(sel){ sel.style.zIndex = 0; persist(); } };
-document.getElementById('del').onclick   = () => { if(sel){ sel.style.display='none'; sel.dataset.hidden='1'; select(null); persist(); } };
+document.getElementById('del').onclick   = () => deleteEl(sel);
+document.getElementById('dup').onclick   = () => {
+  if(!sel) return;
+  const c = sel.cloneNode(true);
+  c.dataset.id = sel.dataset.id + '-copy-' + Date.now().toString(36);
+  c.classList.remove('sel');
+  c.style.left = (parseFloat(sel.style.left) + 20) + 'px';
+  c.style.top  = (parseFloat(sel.style.top) + 20) + 'px';
+  c.style.zIndex = ++z;
+  canvas.appendChild(c);
+  select(c);
+  persist();
+};
 
 document.getElementById('save').onclick = () => {
   persist();
@@ -371,10 +443,11 @@ document.getElementById('exp').onclick = () => {
       id: e.dataset.id, label: e.dataset.label,
       x: parseFloat(e.style.left), y: parseFloat(e.style.top),
       w: Math.round(e.getBoundingClientRect().width),
-      h: Math.round(e.getBoundingClientRect().height)
+      h: Math.round(e.getBoundingClientRect().height),
+      txt: (e.querySelector('.content').innerText || '').trim().replace(/\s+/g,' ').slice(0,90)
     }))
     .sort((a,b) => a.y - b.y || a.x - b.x)
-    .map(o => `${o.label.padEnd(18)} x:${String(o.x).padStart(4)}  y:${String(o.y).padStart(4)}  w:${String(o.w).padStart(4)}  h:${String(o.h).padStart(4)}`);
+    .map(o => `${o.label.padEnd(18)} x:${String(o.x).padStart(4)}  y:${String(o.y).padStart(4)}  w:${String(o.w).padStart(4)}  h:${String(o.h).padStart(4)}${o.txt ? '\n    "' + o.txt + '"' : ''}`);
   const hidden = els().filter(e => e.dataset.hidden === '1').map(e => '– ' + e.dataset.label);
   const txt = 'LAYOUT (sorted top to bottom)\n\n' + lines.join('\n') +
               (hidden.length ? '\n\nHIDDEN:\n' + hidden.join('\n') : '');
@@ -388,20 +461,29 @@ document.getElementById('exp').onclick = () => {
 };
 
 /* ---------- persistence ---------- */
+const KNOWN = new Set(DEFS.map(d => d.id));
+
 function persist(){
   const s = {};
   els().forEach(e => {
     s[e.dataset.id] = {
+      label: e.dataset.label,
       x: e.style.left, y: e.style.top,
       w: e.style.width, h: e.style.height,
-      z: e.style.zIndex, hidden: e.dataset.hidden === '1'
+      z: e.style.zIndex,
+      hidden: e.dataset.hidden === '1',
+      html: e.querySelector('.content').innerHTML,
+      clone: !KNOWN.has(e.dataset.id)
     };
   });
   try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(err){}
 }
+
 function restore(){
   let s; try{ s = JSON.parse(localStorage.getItem(KEY)); }catch(err){}
   if(!s) return;
+
+  // existing elements
   els().forEach(e => {
     const d = s[e.dataset.id];
     if(!d) return;
@@ -410,7 +492,24 @@ function restore(){
     if(d.w) e.style.width = d.w;
     if(d.h) e.style.height = d.h;
     if(d.z) e.style.zIndex = d.z;
+    if(d.html) e.querySelector('.content').innerHTML = d.html;
     if(d.hidden){ e.style.display='none'; e.dataset.hidden='1'; }
+  });
+
+  // duplicated elements created in a previous session
+  Object.keys(s).forEach(id => {
+    const d = s[id];
+    if(!d.clone || canvas.querySelector(`.el[data-id="${id}"]`)) return;
+    const el = document.createElement('div');
+    el.className = 'el';
+    el.dataset.id = id;
+    el.dataset.label = d.label || 'copy';
+    el.style.left = d.x; el.style.top = d.y;
+    el.style.width = d.w; el.style.height = d.h;
+    el.style.zIndex = d.z || ++z;
+    el.innerHTML = `<span class="tag">${d.label || 'copy'}</span><div class="content">${d.html || ''}</div><span class="rz"></span>`;
+    if(d.hidden){ el.style.display='none'; el.dataset.hidden='1'; }
+    canvas.appendChild(el);
   });
 }
 restore();
