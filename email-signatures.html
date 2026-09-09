@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluenix — email signature templates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#00A896; --teal-2:#008678;
+    --red:#E50F0D;
+    --ink:#2B2D2F; --ink-2:#4C4E50; --ink-3:#808182; --ink-4:#B0B1B2;
+    --line:#E5E5E5; --paper:#FFFFFF; --paper-2:#F7F9F9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Figtree',system-ui,sans-serif;
+    background:#EDEFEF;color:var(--ink);line-height:1.6;
+    padding:32px 20px 80px;
+  }
+  .wrap{max-width:900px;margin:0 auto}
+
+  header.page{margin-bottom:32px}
+  .kicker{
+    display:inline-block;background:#E5F6F4;color:var(--teal-2);
+    padding:5px 13px;border-radius:16px;font-size:11px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;
+  }
+  h1{font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.2;margin-bottom:8px}
+  .lede{color:var(--ink-3);font-size:15.5px;max-width:640px}
+
+  .card{
+    background:var(--paper);border-radius:14px;padding:26px 28px 28px;
+    box-shadow:0 3px 16px rgba(15,31,46,.07);margin-bottom:26px;
+  }
+  .card-head{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;margin-bottom:6px;
+  }
+  .card-head h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
+  .phase-tag{
+    font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    padding:4px 10px;border-radius:12px;
+  }
+  .tag-1{background:#FDEBEB;color:var(--red)}
+  .tag-2{background:#E5F6F4;color:var(--teal-2)}
+  .card-note{color:var(--ink-3);font-size:13.5px;margin-bottom:20px}
+
+  .render{
+    border:1px solid var(--line);border-radius:10px;
+    padding:24px;background:#fff;overflow-x:auto;
+  }
+  .btns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .btn{
+    border:none;border-radius:8px;padding:10px 18px;cursor:pointer;
+    font-family:inherit;font-size:13px;font-weight:700;
+  }
+  .btn-primary{background:var(--teal);color:#fff}
+  .btn-primary:hover{background:var(--teal-2)}
+  .btn-ghost{background:#EEF1F1;color:var(--ink-2)}
+  .btn-ghost:hover{background:#E2E6E6}
+
+  details{margin-top:14px}
+  summary{
+    cursor:pointer;font-size:12.5px;font-weight:700;color:var(--ink-3);
+    letter-spacing:.04em;text-transform:uppercase;padding:6px 0;
+  }
+  summary:hover{color:var(--teal-2)}
+  pre{
+    background:#0d1117;color:#a5d6c9;border-radius:8px;padding:16px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.6;
+    overflow-x:auto;margin-top:10px;white-space:pre-wrap;word-break:break-all;
+  }
+
+  .rules{background:var(--paper);border-radius:14px;padding:26px 28px;box-shadow:0 3px 16px rgba(15,31,46,.07)}
+  .rules h2{font-size:19px;font-weight:800;margin-bottom:14px}
+  .rules h3{font-size:14px;font-weight:800;margin:20px 0 8px;color:var(--ink)}
+  .rules p,.rules li{font-size:14.5px;color:var(--ink-2);line-height:1.65}
+  .rules ul{list-style:none;margin-top:6px}
+  .rules li{padding:5px 0 5px 20px;position:relative}
+  .rules li::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;background:var(--teal);border-radius:50%}
+  .warn{
+    background:#FFF7E6;border-left:3px solid #D97706;border-radius:6px;
+    padding:12px 16px;font-size:13.5px;color:#78350F;line-height:1.6;margin-top:16px;
+  }
+  .warn strong{font-weight:800}
+  code.inline{background:#EEF1F1;padding:1px 6px;border-radius:4px;font-family:ui-monospace,monospace;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="page">
+  <span class="kicker">Rebrand · Email signatures</span>
+  <h1>Two signature templates</h1>
+  <p class="lede">Phase 1 carries the FuelOmat → Fluenix bridge. Phase 2 is the same template with that one block removed. Swapping between them is a file replacement, not a redesign.</p>
+</header>
+
+<!-- ============ PHASE 1 ============ -->
+<div class="card">
+  <div class="card-head">
+    <h2>Phase 1 — transition</h2>
+    <span class="phase-tag tag-1">Go-live → +3 months</span>
+  </div>
+  <p class="card-note">Fluenix leads. FuelOmat appears once, small, at the bottom — with a link to the announcement page.</p>
+
+  <div class="render">
+    <div id="sig1">
+<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">
+  <tr>
+    <td style="padding:0 0 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#242021;line-height:20px;">
+      Ji&#345;&iacute; Tom&aacute;&scaron;ek<br>
+      <span style="font-size:13px;font-weight:normal;color:#7A7577;line-height:18px;">Vedouc&iacute; obchodn&#283;-projektov&eacute;ho t&yacute;mu</span>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:0 0 14px 0;">
+      <img src="https://galijohn.github.io/fluenix-rebrand/fluenix-logo.png" width="170" height="41" alt="Fluenix" style="display:block;border:0;outline:none;width:170px;height:41px;">
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#4A4547;line-height:19px;">
+      <span style="font-weight:bold;color:#242021;">Novum Global, a.&nbsp;s.</span><br>
+      28. pluku 483/11, 101 00 Praha 10, CZ<br>
+      I&#268;: 14893126 &nbsp;&middot;&nbsp; DI&#268;: CZ14893126
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:0 0 16px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#4A4547;line-height:20px;">
+      M: <a href="tel:+420725558040" style="color:#4A4547;text-decoration:none;">+420 725 558 040</a><br>
+      E: <a href="mailto:jiri.tomasek@fluenix.eu" style="color:#00A896;text-decoration:none;font-weight:bold;">jiri.tomasek@fluenix.eu</a><br>
+      W: <a href="https://fluenix.eu" style="color:#00A896;text-decoration:none;font-weight:bold;">fluenix.eu</a>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;border-top:1px solid #E5E1E2;">
+        <tr>
+          <td style="padding:14px 0 0 0;">
+            <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              <tr>
+                <td style="padding:0 10px 0 0;vertical-align:middle;">
+                  <img src="https://galijohn.github.io/fluenix-rebrand/fuelomat-logo.png" width="86" height="21" alt="FuelOmat" style="display:block;border:0;outline:none;width:86px;height:21px;opacity:0.55;">
+                </td>
+                <td style="padding:0 10px 0 0;vertical-align:middle;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#E50F0D;font-weight:bold;">&rarr;</td>
+                <td style="padding:0 14px 0 0;vertical-align:middle;">
+                  <img src="https://galijohn.github.io/fluenix-rebrand/fluenix-logo.png" width="86" height="21" alt="Fluenix" style="display:block;border:0;outline:none;width:86px;height:21px;">
+                </td>
+                <td style="vertical-align:middle;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;color:#7A7577;line-height:16px;">
+                  FuelOmat is now Fluenix.<br>
+                  <a href="https://galijohn.github.io/fluenix-rebrand/formerly-fuelomat-old-en.html" style="color:#00A896;text-decoration:none;font-weight:bold;">Read why &rarr;</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+    </div>
+  </div>
+
+  <div class="btns">
+    <button class="btn btn-primary" onclick="copyRendered('sig1',this)">Copy signature (paste into Gmail / Outlook)</button>
+    <button class="btn btn-ghost" onclick="copySource('sig1',this)">Copy HTML source</button>
+  </div>
+
+  <details>
+    <summary>Show HTML source</summary>
+    <pre id="src1"></pre>
+  </details>
+</div>
+
+<!-- ============ PHASE 2 ============ -->
+<div class="card">
+  <div class="card-head">
+    <h2>Phase 2 — permanent</h2>
+    <span class="phase-tag tag-2">+3 months onward</span>
+  </div>
+  <p class="card-note">Identical template with the bottom bridge block deleted. Nothing else changes.</p>
+
+  <div class="render">
+    <div id="sig2">
+<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">
+  <tr>
+    <td style="padding:0 0 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#242021;line-height:20px;">
+      Ji&#345;&iacute; Tom&aacute;&scaron;ek<br>
+      <span style="font-size:13px;font-weight:normal;color:#7A7577;line-height:18px;">Vedouc&iacute; obchodn&#283;-projektov&eacute;ho t&yacute;mu</span>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:0 0 14px 0;">
+      <img src="https://galijohn.github.io/fluenix-rebrand/fluenix-logo.png" width="170" height="41" alt="Fluenix" style="display:block;border:0;outline:none;width:170px;height:41px;">
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#4A4547;line-height:19px;">
+      <span style="font-weight:bold;color:#242021;">Novum Global, a.&nbsp;s.</span><br>
+      28. pluku 483/11, 101 00 Praha 10, CZ<br>
+      I&#268;: 14893126 &nbsp;&middot;&nbsp; DI&#268;: CZ14893126
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#4A4547;line-height:20px;">
+      M: <a href="tel:+420725558040" style="color:#4A4547;text-decoration:none;">+420 725 558 040</a><br>
+      E: <a href="mailto:jiri.tomasek@fluenix.eu" style="color:#00A896;text-decoration:none;font-weight:bold;">jiri.tomasek@fluenix.eu</a><br>
+      W: <a href="https://fluenix.eu" style="color:#00A896;text-decoration:none;font-weight:bold;">fluenix.eu</a>
+    </td>
+  </tr>
+</table>
+    </div>
+  </div>
+
+  <div class="btns">
+    <button class="btn btn-primary" onclick="copyRendered('sig2',this)">Copy signature (paste into Gmail / Outlook)</button>
+    <button class="btn btn-ghost" onclick="copySource('sig2',this)">Copy HTML source</button>
+  </div>
+
+  <details>
+    <summary>Show HTML source</summary>
+    <pre id="src2"></pre>
+  </details>
+</div>
+
+<!-- ============ RULES ============ -->
+<div class="rules">
+  <h2>Before rolling this out</h2>
+
+  <h3>1 · Move the logos to fluenix.eu</h3>
+  <p>They currently load from <code class="inline">galijohn.github.io</code> — fine for review, wrong for production. Host them at <code class="inline">fluenix.eu/assets/</code> and replace both <code class="inline">src</code> values. If the URL ever dies, every signature already sent turns into a broken-image box.</p>
+
+  <h3>2 · Decide the email domain</h3>
+  <p>The template uses <code class="inline">@fluenix.eu</code>. If the team stays on <code class="inline">@novumglobal.eu</code>, swap it — but then the signature says Fluenix while the address says Novum, which weakens the message.</p>
+
+  <h3>3 · Per-person fields</h3>
+  <ul>
+    <li>Name and job title</li>
+    <li>Mobile number (both the visible text and the <code class="inline">tel:</code> link)</li>
+    <li>Email (both the visible text and the <code class="inline">mailto:</code> link)</li>
+  </ul>
+  <p>Everything else is identical for the whole team.</p>
+
+  <h3>4 · How to install</h3>
+  <ul>
+    <li><strong>Gmail:</strong> click <em>Copy signature</em> above, then Settings → See all settings → Signature → paste. Do not paste the HTML source — paste the rendered version.</li>
+    <li><strong>Gmail, whole org:</strong> Admin Console → Apps → Google Workspace → Gmail → Compliance → Append footer.</li>
+    <li><strong>Outlook desktop:</strong> save the HTML source as <code class="inline">.htm</code> into <code class="inline">%APPDATA%\Microsoft\Signatures</code>, or paste the rendered version into File → Options → Mail → Signatures.</li>
+    <li><strong>Outlook 365, whole org:</strong> Exchange admin → Mail flow → Rules → apply disclaimer.</li>
+  </ul>
+
+  <div class="warn">
+    <strong>Test before rollout.</strong> Send one email to a Gmail address and one to an Outlook desktop address. Outlook renders HTML through Word, not a browser — it is always the one that breaks. This template is built table-based with inline styles specifically for that, but verify it on a real Outlook before the whole team installs it.
+  </div>
+</div>
+
+</div>
+
+<script>
+function copyRendered(id, btn){
+  const node = document.getElementById(id);
+  const range = document.createRange();
+  range.selectNode(node);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  document.execCommand('copy');
+  sel.removeAllRanges();
+  flash(btn, '✓ Copied — now paste into your signature settings');
+}
+function copySource(id, btn){
+  const html = document.getElementById(id).innerHTML.trim();
+  navigator.clipboard.writeText(html).then(()=>flash(btn,'✓ HTML copied'));
+}
+function flash(btn, msg){
+  const old = btn.textContent;
+  btn.textContent = msg;
+  setTimeout(()=>btn.textContent = old, 2400);
+}
+document.getElementById('src1').textContent = document.getElementById('sig1').innerHTML.trim();
+document.getElementById('src2').textContent = document.getElementById('sig2').innerHTML.trim();
+</script>
+
+</body>
+</html>
