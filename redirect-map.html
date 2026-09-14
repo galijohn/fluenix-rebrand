@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fuelomat.cz → fluenix.eu · Redirect Map</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --ink:#2B2D2F; --ink-2:#55595C; --ink-3:#8A8F92;
+  --teal:#00A896; --teal-d:#007F71; --teal-wash:#E8F5F3;
+  --red:#E50F0D; --line:#DCE9E6; --page:#F3F6F5; --bar:#1E2422;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:Figtree,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}
+body.cs .en-only{display:none} body:not(.cs) .cs-only{display:none}
+
+.bar{background:var(--bar);color:#EAEFED;padding:20px 24px}
+.bar-in{max-width:1180px;margin:0 auto;display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.bar h1{font-size:21px;font-weight:800;margin:0 0 6px}
+.bar p{font-size:14px;margin:0;color:#A9B4B1;max-width:84ch}
+.bar a.back{color:#7FE0D2;text-decoration:none;font-size:13px;font-weight:600;display:inline-block;margin-bottom:10px}
+.lang{display:flex;border:1px solid #3A4441;border-radius:8px;overflow:hidden;flex-shrink:0}
+.lang button{font:inherit;font-size:13px;font-weight:700;background:none;border:0;color:#A9B4B1;padding:7px 14px;cursor:pointer}
+.lang button.on{background:#EAEFED;color:var(--bar)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:28px 24px 56px}
+.status{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:600}
+.pill.ok{background:var(--teal-wash);border-color:#B9E2DB;color:var(--teal-d)}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px -22px rgba(0,60,50,.3)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+th{text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:700;padding:14px 16px;border-bottom:1px solid var(--line)}
+td{padding:11px 16px;border-bottom:1px solid #EEF3F2;vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n{color:var(--ink-3);font-weight:700;width:36px}
+td.url{font-family:ui-monospace,Consolas,monospace;font-size:13px;word-break:break-all}
+td.url a{color:var(--teal-d);text-decoration:none}
+td.url a:hover{text-decoration:underline}
+td.arrow{color:var(--red);font-weight:800;width:24px}
+td.note{color:var(--ink-2)}
+tr.group td{background:#F7FAF9;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink-3);padding:9px 16px}
+tr.catch td{background:#FFF8F3}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}
+.box{padding:22px 24px}
+.box h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 12px;font-weight:800}
+.box ul,.box ol{margin:0;padding-left:20px;color:var(--ink-2);font-size:14.5px}
+.box li{margin:5px 0}
+.box strong{color:var(--ink)}
+.dl{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-weight:700;font-size:14px;color:#fff;background:var(--teal);border-radius:999px;padding:10px 18px;text-decoration:none}
+@media (max-width:800px){.grid{grid-template-columns:1fr}.bar h1{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="bar"><div class="bar-in">
+  <div>
+    <a class="back" href="./">← <span class="en-only">Back to the rebrand plan</span><span class="cs-only">Zpět na plán rebrandu</span></a>
+    <h1>fuelomat.cz → fluenix.eu · <span class="en-only">301 redirect map</span><span class="cs-only">mapa přesměrování 301</span></h1>
+    <p class="en-only">Every page of the old website and where it moves to on the new one. This is the list the web server of fuelomat.cz needs, so visitors and Google rankings move to fluenix.eu.</p>
+    <p class="cs-only">Každá stránka starého webu a kam se přesouvá na novém. Tento seznam potřebuje webový server fuelomat.cz, aby návštěvníci i pozice ve vyhledávání Google přešly na fluenix.eu.</p>
+  </div>
+  <div class="lang"><button type="button" data-l="en" class="on">EN</button><button type="button" data-l="cs">CZ</button></div>
+</div></div>
+
+<div class="wrap">
+  <div class="status">
+    <span class="pill ok"><span class="en-only">✓ 15 of 15 old pages mapped</span><span class="cs-only">✓ Namapováno 15 z 15 starých stránek</span></span>
+    <span class="pill ok"><span class="en-only">✓ All destinations verified live (HTTP 200) · 14 Sep 2026</span><span class="cs-only">✓ Všechny cíle ověřeny živě (HTTP 200) · 14. 9. 2026</span></span>
+    <span class="pill"><span class="en-only">Source: fuelomat.cz sitemap + site menu</span><span class="cs-only">Zdroj: sitemap fuelomat.cz + menu webu</span></span>
+  </div>
+
+  <div class="card table-wrap">
+    <table>
+      <thead><tr>
+        <th>#</th>
+        <th><span class="en-only">Old URL</span><span class="cs-only">Stará URL</span></th>
+        <th></th>
+        <th><span class="en-only">New URL</span><span class="cs-only">Nová URL</span></th>
+        <th><span class="en-only">What it is</span><span class="cs-only">Co to je</span></th>
+      </tr></thead>
+      <tbody>
+        <tr class="group"><td colspan="5"><span class="en-only">Czech pages</span><span class="cs-only">České stránky</span></td></tr>
+        <tr><td class="n">1</td><td class="url">www.fuelomat.cz/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs" target="_blank" rel="noopener">fluenix.eu/cs</a></td><td class="note"><span class="en-only">Homepage → homepage</span><span class="cs-only">Úvodní stránka → úvodní stránka</span></td></tr>
+        <tr><td class="n">2</td><td class="url">www.fuelomat.cz/kontakt/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs/kontakt" target="_blank" rel="noopener">fluenix.eu/cs/kontakt</a></td><td class="note"><span class="en-only">Contact</span><span class="cs-only">Kontakt</span></td></tr>
+        <tr><td class="n">3</td><td class="url">www.fuelomat.cz/produkty/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs/reseni-fluenix-fuel" target="_blank" rel="noopener">fluenix.eu/cs/reseni-fluenix-fuel</a></td><td class="note"><span class="en-only">Products → Fluenix Fuel solution</span><span class="cs-only">Produkty → řešení Fluenix Fuel</span></td></tr>
+        <tr><td class="n">4</td><td class="url">www.fuelomat.cz/vydejni-stojan/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs/products/vydejni-stojan-s-cerpadlem" target="_blank" rel="noopener">fluenix.eu/cs/products/vydejni-stojan-s-cerpadlem</a></td><td class="note"><span class="en-only">Dispensing stand → the same product</span><span class="cs-only">Výdejní stojan → stejný produkt</span></td></tr>
+        <tr><td class="n">5</td><td class="url">www.fuelomat.cz/sluzby/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs" target="_blank" rel="noopener">fluenix.eu/cs</a></td><td class="note"><span class="en-only">Services (empty page) → homepage</span><span class="cs-only">Služby (prázdná stránka) → úvodní stránka</span></td></tr>
+        <tr><td class="n">6</td><td class="url">www.fuelomat.cz/zasady-cookies/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs/zasady-ochrany-osobnich-udaju" target="_blank" rel="noopener">fluenix.eu/cs/zasady-ochrany-osobnich-udaju</a></td><td class="note"><span class="en-only">Cookies → privacy policy</span><span class="cs-only">Cookies → zásady ochrany osobních údajů</span></td></tr>
+        <tr><td class="n">7</td><td class="url">www.fuelomat.cz/ochrana-osobnich-udaju/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs/zasady-ochrany-osobnich-udaju" target="_blank" rel="noopener">fluenix.eu/cs/zasady-ochrany-osobnich-udaju</a></td><td class="note"><span class="en-only">Privacy policy</span><span class="cs-only">Ochrana osobních údajů</span></td></tr>
+        <tr><td class="n">8</td><td class="url">www.fuelomat.cz/vseobecne-obchodni-podminky/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs" target="_blank" rel="noopener">fluenix.eu/cs</a></td><td class="note"><span class="en-only">Terms (no equivalent yet) → homepage</span><span class="cs-only">Obchodní podmínky (zatím bez náhrady) → úvodní stránka</span></td></tr>
+        <tr><td class="n">9</td><td class="url">www.fuelomat.cz/reklamacni-rad/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs/kontakt" target="_blank" rel="noopener">fluenix.eu/cs/kontakt</a></td><td class="note"><span class="en-only">Complaints → contact</span><span class="cs-only">Reklamační řád → kontakt</span></td></tr>
+        <tr class="group"><td colspan="5"><span class="en-only">English pages</span><span class="cs-only">Anglické stránky</span></td></tr>
+        <tr><td class="n">10</td><td class="url">www.fuelomat.cz/en/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/" target="_blank" rel="noopener">fluenix.eu/</a></td><td class="note"><span class="en-only">Homepage → homepage</span><span class="cs-only">Úvodní stránka → úvodní stránka</span></td></tr>
+        <tr><td class="n">11</td><td class="url">www.fuelomat.cz/en/contact/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/contact" target="_blank" rel="noopener">fluenix.eu/contact</a></td><td class="note"><span class="en-only">Contact</span><span class="cs-only">Kontakt</span></td></tr>
+        <tr><td class="n">12</td><td class="url">www.fuelomat.cz/en/products/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/solutions-fluenix-fuel" target="_blank" rel="noopener">fluenix.eu/solutions-fluenix-fuel</a></td><td class="note"><span class="en-only">Products → Fluenix Fuel solution</span><span class="cs-only">Produkty → řešení Fluenix Fuel</span></td></tr>
+        <tr><td class="n">13</td><td class="url">www.fuelomat.cz/en/services/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/" target="_blank" rel="noopener">fluenix.eu/</a></td><td class="note"><span class="en-only">Services → homepage</span><span class="cs-only">Služby → úvodní stránka</span></td></tr>
+        <tr><td class="n">14</td><td class="url">www.fuelomat.cz/en/cookie-policy/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/privacy-policy" target="_blank" rel="noopener">fluenix.eu/privacy-policy</a></td><td class="note"><span class="en-only">Cookies → privacy policy</span><span class="cs-only">Cookies → zásady ochrany osobních údajů</span></td></tr>
+        <tr><td class="n">15</td><td class="url">www.fuelomat.cz/en/privacy-policy/</td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/privacy-policy" target="_blank" rel="noopener">fluenix.eu/privacy-policy</a></td><td class="note"><span class="en-only">Privacy policy</span><span class="cs-only">Ochrana osobních údajů</span></td></tr>
+        <tr class="catch"><td class="n">*</td><td class="url"><span class="en-only">any other URL on fuelomat.cz</span><span class="cs-only">jakákoli jiná URL na fuelomat.cz</span></td><td class="arrow">→</td><td class="url"><a href="https://fluenix.eu/cs" target="_blank" rel="noopener">fluenix.eu/cs</a></td><td class="note"><span class="en-only">Safety net (old links to images, files, etc.)</span><span class="cs-only">Záchranná síť (staré odkazy na obrázky, soubory apod.)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid">
+    <div class="card box">
+      <h2><span class="en-only">Rules for the web server</span><span class="cs-only">Pravidla pro webový server</span></h2>
+      <ul class="en-only">
+        <li><strong>301 (permanent)</strong>, never 302 — only a 301 tells Google to move the ranking.</li>
+        <li>Works for every variant: <strong>http / https, with and without www, with and without the trailing slash</strong>.</li>
+        <li>Keep the <strong>HTTPS certificate</strong> on fuelomat.cz valid, so https:// links still redirect.</li>
+        <li>Keep the redirects <strong>at least 1 year</strong> (Google's guidance) and keep the domain renewed.</li>
+        <li><strong>Do not touch mail:</strong> MX, SPF and other mail records of fuelomat.cz stay as they are.</li>
+      </ul>
+      <ul class="cs-only">
+        <li><strong>301 (trvalé)</strong>, nikdy 302 — pouze 301 řekne Googlu, aby přenesl pozice.</li>
+        <li>Funguje pro všechny varianty: <strong>http / https, s www i bez, s lomítkem na konci i bez</strong>.</li>
+        <li><strong>HTTPS certifikát</strong> na fuelomat.cz musí zůstat platný, aby https:// odkazy dál přesměrovaly.</li>
+        <li>Přesměrování ponechat <strong>minimálně 1 rok</strong> (doporučení Googlu) a doménu dál prodlužovat.</li>
+        <li><strong>Nesahat na poštu:</strong> MX, SPF a další poštovní záznamy fuelomat.cz zůstávají beze změny.</li>
+      </ul>
+    </div>
+    <div class="card box">
+      <h2><span class="en-only">After the redirects are live</span><span class="cs-only">Po spuštění přesměrování</span></h2>
+      <ol class="en-only">
+        <li><strong>Test all 15</strong> — each old URL must answer 301 and land on a 200 page.</li>
+        <li><strong>Verify fuelomat.cz in Search Console</strong> — one TXT record at Websupport (code already generated for gali@fluenix.eu). fluenix.eu is already verified.</li>
+        <li><strong>Change of Address</strong> in Search Console: fuelomat.cz → fluenix.eu.</li>
+        <li><strong>Submit the sitemap</strong> fluenix.eu/sitemap.xml (already live).</li>
+      </ol>
+      <ol class="cs-only">
+        <li><strong>Otestovat všech 15</strong> — každá stará URL musí vrátit 301 a skončit na stránce 200.</li>
+        <li><strong>Ověřit fuelomat.cz v Search Console</strong> — jeden TXT záznam u Websupportu (kód je už vygenerován pro gali@fluenix.eu). fluenix.eu je již ověřena.</li>
+        <li><strong>Změna adresy</strong> v Search Console: fuelomat.cz → fluenix.eu.</li>
+        <li><strong>Odeslat sitemap</strong> fluenix.eu/sitemap.xml (už je online).</li>
+      </ol>
+    </div>
+  </div>
+
+  <a class="dl" href="fluenix-url-redirect-map.csv" download>⬇ <span class="en-only">Download as CSV (for the web server)</span><span class="cs-only">Stáhnout jako CSV (pro webový server)</span></a>
+</div>
+
+<script>
+(function(){
+  var btns = document.querySelectorAll('.lang button');
+  function set(l){
+    document.body.classList.toggle('cs', l === 'cs');
+    document.documentElement.lang = l;
+    btns.forEach(function(b){ b.classList.toggle('on', b.dataset.l === l); });
+    try { localStorage.setItem('fluenix-lang', l); } catch(e) {}
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ set(b.dataset.l); }); });
+  var saved = null; try { saved = localStorage.getItem('fluenix-lang'); } catch(e) {}
+  if (/[?&]lang=cs/.test(location.search) || saved === 'cs') set('cs');
+})();
+</script>
+</body>
+</html>
